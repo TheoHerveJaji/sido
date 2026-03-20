@@ -1,13 +1,13 @@
 <template>
-  <div class="page-section">
-    <div class="page-section__header">
+  <div class="flex flex--column gap--regular">
+    <div class="flex flex--align-center flex--justify-between gap--medium">
       <LcTitleSection :type="titleEnum.H1">Utilisateurs</LcTitleSection>
     </div>
 
     <!-- ── Barre de recherche ── -->
-    <div class="search-filters">
-      <div class="search-filters__field">
-        <label>Rechercher</label>
+    <div class="flex flex--align-end flex--wrap gap--medium">
+      <div class="flex flex--column gap--micro search-field">
+        <label class="text--caption-semibold text--neutral-600">Rechercher</label>
         <LcInput
           v-model="search"
           placeholder="Nom ou email..."
@@ -20,7 +20,7 @@
     </div>
 
     <!-- ── Loader ── -->
-    <div v-if="pending" class="empty-state">
+    <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
       <LcLoader variant="primary" size="lg" />
     </div>
 
@@ -47,9 +47,7 @@
       <!-- Rôle -->
       <template #role="{ data: cellData }">
         <LcPill
-          :variant="
-            cellData === 'ADMIN' ? COLOR_ENUM.DANGER : COLOR_ENUM.NEUTRAL
-          "
+          :variant="cellData === 'ADMIN' ? COLOR_ENUM.DANGER : COLOR_ENUM.NEUTRAL"
           size="small"
         >
           {{ cellData }}
@@ -58,7 +56,7 @@
 
       <!-- Domaines -->
       <template #domains="{ data: cellData }">
-        <div class="flex flex--gap-sm flex--wrap">
+        <div class="flex flex--wrap gap--small">
           <LcPill
             v-for="domain in cellData ?? []"
             :key="domain"
@@ -71,26 +69,24 @@
       </template>
 
       <!-- Statut -->
-      <template #is_active="{ data: cellData, item }">
+      <template #is_active="{ data: cellData }">
         <LcPill
           :variant="cellData ? COLOR_ENUM.SUCCESS : COLOR_ENUM.DANGER"
           size="small"
         >
-          {{ cellData ? "Actif" : "Inactif" }}
+          {{ cellData ? 'Actif' : 'Inactif' }}
         </LcPill>
       </template>
 
       <!-- Dernière connexion -->
       <template #last_login="{ data: cellData }">
-        <span v-if="typeof cellData === 'string' && cellData">{{
-          formatDate(cellData)
-        }}</span>
+        <span v-if="typeof cellData === 'string' && cellData">{{ formatDate(cellData) }}</span>
         <LcIcon v-else name="minus" color="neutral-400" />
       </template>
 
       <!-- Actions -->
       <template #actions="{ item }">
-        <div class="flex flex--gap-sm flex--align-center">
+        <div class="flex flex--align-center gap--small">
           <LcButton
             variant="tertiary"
             icon-left="edit"
@@ -118,65 +114,54 @@ import {
   LcInput,
   LcLoader,
   LcTitleSection,
-  LcToggle,
   COLOR_ENUM,
   titleEnum,
-} from "@projetlucie/lc-front-components";
-import { ADMIN_USERS_HEADERS } from "~/types/table-headers";
-import { formatDate } from "~/utils/formatters";
+} from '@projetlucie/lc-front-components'
+import { ADMIN_USERS_HEADERS } from '~/types/table-headers'
+import { formatDate } from '~/utils/formatters'
+
+definePageMeta({ layout: 'domain' })
+
+interface AdminUser {
+  id: string | number
+  display_name: string
+  email: string
+  role: string
+  domains?: string[]
+  is_active: boolean
+  last_login?: string | null
+}
 
 // ── Recherche et pagination ──
-const search = ref("");
-const currentPage = ref(1);
-const rowsPerPage = ref(25);
-const sortBy = ref<string[]>(["display_name"]);
-const sortType = ref<string[]>(["asc"]);
+const search = ref('')
+const currentPage = ref(1)
+const rowsPerPage = ref(25)
+const sortBy = ref<string[]>(['display_name'])
+const sortType = ref<string[]>(['asc'])
 
-// Define a type for your user items
-type AdminUser = {
-  id: string | number;
-  display_name: string;
-  email: string;
-  role: string;
-  domains?: string[];
-  is_active: boolean;
-  last_login?: string | null;
-  // add other fields as needed
-};
-
-const { data, pending, refresh } = await useFetch<{
-  data: AdminUser[];
-  total: number;
-}>("/api/admin/users", {
+const { data, pending, refresh } = await useFetch<{ data: AdminUser[]; total: number }>('/api/admin/users', {
   query: computed(() => ({
     page: currentPage.value,
     limit: rowsPerPage.value,
-    sortBy: sortBy.value?.[0] ?? "display_name",
-    sortType: sortType.value?.[0] ?? "asc",
+    sortBy: sortBy.value?.[0] ?? 'display_name',
+    sortType: sortType.value?.[0] ?? 'asc',
     search: search.value || undefined,
   })),
   watch: [currentPage, sortBy, sortType],
-});
+})
 
 const handleSearch = () => {
-  currentPage.value = 1;
-  refresh();
-};
+  currentPage.value = 1
+  refresh()
+}
 
 const handleRowClick = (row: AdminUser) => {
-  navigateTo(`/admin/users/${String(row.id)}`);
-};
-
-// ── Toggle actif/inactif depuis la liste ──
-const toggleActive = async (user: any) => {
-  try {
-    await $fetch(`/api/admin/users/${user.id}`, {
-      method: "PUT",
-      body: { is_active: !user.is_active },
-    });
-    refresh();
-  } catch (err) {
-    console.error("[Admin users] Toggle error:", err);
-  }
-};
+  navigateTo(`/admin/users/${String(row.id)}`)
+}
 </script>
+
+<style scoped>
+.search-field {
+  min-width: 180px;
+}
+</style>

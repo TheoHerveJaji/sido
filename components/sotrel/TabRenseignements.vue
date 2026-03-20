@@ -31,52 +31,52 @@ const etatsHistorique = computed(() => {
 </script>
 
 <template>
-  <div v-if="rg" class="page-section">
+  <div v-if="rg" class="flex flex--column gap--regular">
     <!-- ── Informations générales ── -->
     <LcCardContainer :border="true" padding="regular">
       <template #header>
-        <span class="section-block__title">Informations générales</span>
+        <span class="text--subheader-semibold text--neutral-800">Informations générales</span>
       </template>
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span class="detail-item__label">Adresse</span>
-          <span class="detail-item__value">
+      <div class="grid grid--2-col grid--fluid gap--regular">
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Adresse</span>
+          <span class="text--body text--neutral-900">
             {{ [rg.ADRESSE1, rg.ADRESSE2, rg.ADRESSE3].filter(Boolean).join(', ') }}
             <br v-if="rg.CDPOST || rg.VILLE" />
             {{ [rg.CDPOST, rg.VILLE].filter(Boolean).join(' ') }}
           </span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Date de naissance</span>
-          <span class="detail-item__value">{{ formatDate(rg.DATNAI) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Date de naissance</span>
+          <span class="text--body text--neutral-900">{{ formatDate(rg.DATNAI) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Âge</span>
-          <span class="detail-item__value">{{ rg.AGE ?? '–' }} ans</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Âge</span>
+          <span class="text--body text--neutral-900">{{ rg.AGE ?? '–' }} ans</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Profession</span>
-          <span class="detail-item__value">{{ rg.PROFESSION || '–' }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Profession</span>
+          <span class="text--body text--neutral-900">{{ rg.PROFESSION || '–' }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Situation familiale</span>
-          <span class="detail-item__value">{{ rg.SITUATION_FAMILIALE || '–' }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Situation familiale</span>
+          <span class="text--body text--neutral-900">{{ rg.SITUATION_FAMILIALE || '–' }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Situation Carcept</span>
-          <span class="detail-item__value">{{ rg.SITUATION_CARCEPT || '–' }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Situation Carcept</span>
+          <span class="text--body text--neutral-900">{{ rg.SITUATION_CARCEPT || '–' }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">N° FIT</span>
-          <span class="detail-item__value detail-item__value--mono">{{ rg.IDF_FIT || '–' }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">N° FIT</span>
+          <span class="text--body text--neutral-900 text-mono">{{ rg.IDF_FIT || '–' }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Référence assureur</span>
-          <span class="detail-item__value">{{ rg.REFRENCE_ASSUREUR || '–' }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Référence assureur</span>
+          <span class="text--body text--neutral-900">{{ rg.REFRENCE_ASSUREUR || '–' }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Libre service</span>
-          <span class="detail-item__value">{{ rg.LIBRE_SERVICE || '–' }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Libre service</span>
+          <span class="text--body text--neutral-900">{{ rg.LIBRE_SERVICE || '–' }}</span>
         </div>
       </div>
     </LcCardContainer>
@@ -84,28 +84,14 @@ const etatsHistorique = computed(() => {
     <!-- ── Historique des états ── -->
     <LcCardContainer v-if="etatsHistorique.length > 0" :border="true" padding="regular">
       <template #header>
-        <span class="section-block__title">Historique des états</span>
+        <span class="text--subheader-semibold text--neutral-800">Historique des états</span>
       </template>
-      <div class="etats-list">
-        <div v-for="(etat, index) in etatsHistorique" :key="index" class="etat-item">
+      <div class="flex flex--column gap--small">
+        <div v-for="(etat, index) in etatsHistorique" :key="index" class="flex flex--align-center gap--medium">
           <LcPill :variant="COLOR_ENUM.NEUTRAL" size="small">{{ etat.code }}</LcPill>
-          <span class="detail-item__value">{{ formatDate(etat.date) }}</span>
+          <span class="text--body text--neutral-900">{{ formatDate(etat.date) }}</span>
         </div>
       </div>
     </LcCardContainer>
   </div>
 </template>
-
-<style scoped>
-.etats-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--small);
-}
-
-.etat-item {
-  display: flex;
-  align-items: center;
-  gap: var(--gutters--medium);
-}
-</style>

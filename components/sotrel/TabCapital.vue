@@ -19,40 +19,40 @@ const capital = computed(() => data.value?.data ?? null)
 </script>
 
 <template>
-  <div v-if="pending" class="empty-state">
+  <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
     <LcLoader variant="primary" size="md" />
   </div>
 
-  <div v-else-if="capital" class="page-section">
+  <div v-else-if="capital" class="flex flex--column gap--regular">
     <!-- ── Références salaires ── -->
     <LcCardContainer :border="true" padding="regular">
       <template #header>
-        <span class="section-block__title">Références salaires</span>
+        <span class="text--subheader-semibold text--neutral-800">Références salaires</span>
       </template>
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span class="detail-item__label">Salaire T1</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_1) }}</span>
+      <div class="grid grid--2-col grid--fluid gap--regular">
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Salaire T1</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_1) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Salaire T2</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_2) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Salaire T2</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_2) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Salaire T3</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_3) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Salaire T3</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_3) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Salaire T4</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_4) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Salaire T4</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.SALAIRE_TRIMESTRE_4) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Salaire annuel</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.SALAIRE_ANNUEL) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Salaire annuel</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.SALAIRE_ANNUEL) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Salaire de référence</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.SALAIRE_DE_REFERENCE) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Salaire de référence</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.SALAIRE_DE_REFERENCE) }}</span>
         </div>
       </div>
     </LcCardContainer>
@@ -60,42 +60,42 @@ const capital = computed(() => data.value?.data ?? null)
     <!-- ── Calcul du capital ── -->
     <LcCardContainer :border="true" padding="regular">
       <template #header>
-        <span class="section-block__title">Calcul du capital</span>
+        <span class="text--subheader-semibold text--neutral-800">Calcul du capital</span>
       </template>
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span class="detail-item__label">Pourcentage 1</span>
-          <span class="detail-item__value">{{ capital.POURCENTAGE1 ?? '–' }} %</span>
+      <div class="grid grid--2-col grid--fluid gap--regular">
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Pourcentage 1</span>
+          <span class="text--body text--neutral-900">{{ capital.POURCENTAGE1 ?? '–' }} %</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Pourcentage 2</span>
-          <span class="detail-item__value">{{ capital.POURCENTAGE2 ?? '–' }} %</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Pourcentage 2</span>
+          <span class="text--body text--neutral-900">{{ capital.POURCENTAGE2 ?? '–' }} %</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Pourcentage 3</span>
-          <span class="detail-item__value">{{ capital.POURCENTAGE3 ?? '–' }} %</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Pourcentage 3</span>
+          <span class="text--body text--neutral-900">{{ capital.POURCENTAGE3 ?? '–' }} %</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Nombre 24ème</span>
-          <span class="detail-item__value">{{ capital.NOMBRE_24 ?? '–' }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Nombre 24ème</span>
+          <span class="text--body text--neutral-900">{{ capital.NOMBRE_24 ?? '–' }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Capital</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.CAPITAL) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Capital</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.CAPITAL) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Majoration</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.MAJORATION) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Majoration</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.MAJORATION) }}</span>
         </div>
-        <div class="detail-item capital-total">
-          <span class="detail-item__label">Total à payer</span>
+        <div class="flex flex--column gap--micro bg--success-100 p--small radius--small">
+          <span class="text--caption-semibold text--neutral-600">Total à payer</span>
           <LcPill :variant="COLOR_ENUM.SUCCESS" size="regular">
             {{ formatCurrency(capital.TOTAL) }}
           </LcPill>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Date de paiement</span>
-          <span class="detail-item__value">{{ formatDate(capital.DATE_PAIEMENT) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Date de paiement</span>
+          <span class="text--body text--neutral-900">{{ formatDate(capital.DATE_PAIEMENT) }}</span>
         </div>
       </div>
     </LcCardContainer>
@@ -103,34 +103,26 @@ const capital = computed(() => data.value?.data ?? null)
     <!-- ── Complément (conditionnel) ── -->
     <LcCardContainer v-if="capital.COMPLEMENT" :border="true" padding="regular">
       <template #header>
-        <span class="section-block__title">Complément</span>
+        <span class="text--subheader-semibold text--neutral-800">Complément</span>
       </template>
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span class="detail-item__label">Complément</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.COMPLEMENT) }}</span>
+      <div class="grid grid--2-col grid--fluid gap--regular">
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Complément</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.COMPLEMENT) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Revalorisation</span>
-          <span class="detail-item__value">{{ formatCurrency(capital.REVALORISATION) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Revalorisation</span>
+          <span class="text--body text--neutral-900">{{ formatCurrency(capital.REVALORISATION) }}</span>
         </div>
-        <div class="detail-item">
-          <span class="detail-item__label">Date complément</span>
-          <span class="detail-item__value">{{ formatDate(capital.DATE_COMPLEMENT) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">Date complément</span>
+          <span class="text--body text--neutral-900">{{ formatDate(capital.DATE_COMPLEMENT) }}</span>
         </div>
       </div>
     </LcCardContainer>
   </div>
 
-  <div v-else class="empty-state">
+  <div v-else class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
     <p>Aucune donnée de capital disponible pour ce dossier.</p>
   </div>
 </template>
-
-<style scoped>
-.capital-total {
-  background: var(--colors--success-100);
-  padding: var(--gutters--small);
-  border-radius: var(--radius--small);
-}
-</style>

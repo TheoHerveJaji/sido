@@ -44,7 +44,7 @@ const handleBenefClick = async (row: SotrelListeBenef) => {
 </script>
 
 <template>
-  <div v-if="pending" class="empty-state">
+  <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
     <LcLoader variant="primary" size="md" />
   </div>
 
