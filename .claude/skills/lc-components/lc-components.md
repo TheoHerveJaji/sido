@@ -15,9 +15,11 @@ Tu es un expert de la librairie de composants **@projetlucie/lc-front-components
 Tous les composants, enums, types et helpers s'importent depuis `@projetlucie/lc-front-components` :
 
 ```typescript
-import { LcButton, CtaVariant, CtaSize } from '@projetlucie/lc-front-components';
+import { LcButton, COLOR_ENUM, SpacingSize } from '@projetlucie/lc-front-components';
 import type { TabItem, FileInfo } from '@projetlucie/lc-front-components';
 ```
+
+> **Note :** Pour `CtaVariant` et `CtaSize`, ne pas importer les enums — utiliser directement les magic strings (`"primary"`, `"small"`, etc.).
 
 ---
 
@@ -508,7 +510,7 @@ Upload de fichiers avec drag & drop.
 Bouton d'action principal.
 
 ```vue
-<LcButton :variant="CtaVariant.PRIMARY" :size="CtaSize.REGULAR" icon-left="plus" :disabled="false">
+<LcButton variant="primary" size="regular" icon-left="plus" :disabled="false">
   Ajouter
 </LcButton>
 ```
@@ -1741,10 +1743,42 @@ import type {
 
 ---
 
+# CLASSES CSS UTILITAIRES
+
+Le package expose des classes CSS utilitaires via `@projetlucie/lc-front-components/src/assets/scss/`. Les fichiers SCSS disponibles sont :
+
+| Fichier | Description |
+|---------|-------------|
+| `background.scss` | Classes de couleur de fond |
+| `border.scss` | Classes de bordure |
+| `cursor.scss` | Classes de curseur |
+| `display.scss` | Classes d'affichage (block, none, etc.) |
+| `flex.scss` | Classes flexbox |
+| `gap.scss` | Classes d'espacement gap |
+| `grid.scss` | Classes de grille CSS |
+| `margin.scss` | Classes de marge |
+| `padding.scss` | Classes de padding |
+| `radius.scss` | Classes de border-radius |
+| `shadows.scss` | Classes d'ombre |
+| `sizing.scss` | Classes de dimensionnement (width, height) |
+| `text.scss` | Classes typographiques (taille, couleur, poids, alignement) |
+| `toast.scss` | Classes pour les toasts/notifications |
+| `transition.scss` | Classes de transition/animation |
+| `icons.scss` | Classes pour les icones |
+| `breakpoints.scss` | Variables et mixins de breakpoints responsive |
+
+Ces classes sont automatiquement disponibles dans tout projet qui importe le style du package. Utilise-les directement dans les templates HTML/Vue au lieu de reecrire du CSS custom quand une classe utilitaire existe.
+
+---
+
 # REGLES POUR GENERER DU CODE
 
 1. **Toujours importer depuis `@projetlucie/lc-front-components`** - jamais de chemins internes
-2. **Utiliser les enums** plutot que des strings brutes quand un enum existe
+2. **Utiliser les enums** plutot que des strings brutes quand un enum existe, **SAUF pour `CtaVariant` et `CtaSize`** : utiliser directement la magic string au lieu de l'enum.
+   - Exemples : `variant="primary"` au lieu de `:variant="CtaVariant.PRIMARY"`, `size="small"` au lieu de `:size="CtaSize.SMALL"`
+   - Valeurs `CtaVariant` : `"link"`, `"primary"`, `"secondary"`, `"square"`, `"tertiary"`, `"unset"`, `"destructive"`, `"circular"`
+   - Valeurs `CtaSize` : `"small"`, `"regular"`, `"big"`
+   - Cela evite d'importer `CtaVariant` et `CtaSize` inutilement
 3. **Typer les donnees** avec les types fournis (TableHeader, TabItem, etc.)
 4. **v-model** : la plupart des composants de formulaire supportent v-model via `modelValue`
 5. **Slots** : utiliser les slots documentes pour personnaliser les composants

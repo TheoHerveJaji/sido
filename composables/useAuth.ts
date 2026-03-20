@@ -8,8 +8,20 @@
 
 import type { MsalUser, AuthSyncResponse } from '~/types/auth'
 
+// ── Mock : utilisateur simulé quand USE_MOCK=true ──
+const MOCK_USER: MsalUser = {
+  username: 'admin@klesia.fr',
+  name: 'Administrateur SIDO',
+  roles: ['SIDO_ADMIN'],
+  localAccountId: 'mock-admin-entra-id-001',
+} as MsalUser
+
 export const useAuth = () => {
-  const { $msal } = useNuxtApp()
+  const config = useRuntimeConfig()
+  const IS_MOCK = config.public.useMock === true
+
+  // En mode mock, $msal n'est pas nécessaire
+  const { $msal } = IS_MOCK ? { $msal: null } : useNuxtApp()
 
   // ── État réactif partagé (persiste entre les pages via useState) ──
   const user = useState<MsalUser | null>('auth:user', () => null)
@@ -33,8 +45,19 @@ export const useAuth = () => {
 
   const isAuthenticated = computed(() => user.value !== null)
 
-  // ── Connexion via MSAL popup ──
+  // ── Connexion via MSAL popup (ou mock) ──
   const login = async () => {
+    // Mode mock : bypass MSAL, simuler un admin connecté
+    if (IS_MOCK) {
+      user.value = MOCK_USER
+      accessToken.value = 'mock-access-token'
+      userDomains.value = ['SOTREL']
+      resetInactivityTimer()
+      startActivityListeners()
+      navigateTo('/')
+      return
+    }
+
     try {
       const result = await ($msal as any).loginPopup({
         scopes: ['openid', 'profile', 'email'],
@@ -80,7 +103,9 @@ export const useAuth = () => {
         body: { reason, email: user.value?.username },
       }).catch(() => {})
 
-      await ($msal as any).logoutPopup()
+      if (!IS_MOCK) {
+        await ($msal as any).logoutPopup()
+      }
     }
     catch {
       // Continuer même si le logout MSAL échoue
@@ -99,6 +124,7 @@ export const useAuth = () => {
   // ── Récupération silencieuse du token ──
   const getToken = async (): Promise<string | null> => {
     if (!user.value) return null
+    if (IS_MOCK) return 'mock-access-token'
     try {
       const result = await ($msal as any).acquireTokenSilent({
         account: user.value,
