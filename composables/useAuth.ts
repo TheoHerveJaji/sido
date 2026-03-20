@@ -1,168 +1,112 @@
 /* ══════════════════════════════════════════════════════════════
-   Composable d'authentification — Gère le cycle complet :
-   - Connexion / déconnexion via MSAL (Entra ID)
-   - Synchronisation utilisateur en base (POST /api/auth/sync)
-   - Timer d'inactivité de 30 minutes
-   - Lecture du rôle depuis les claims du token
+   Composable d'authentification — Entra ID via MSAL
+   Gère le cycle login/logout, la session utilisateur,
+   les domaines accessibles, et la déconnexion automatique
+   après 30 minutes d'inactivité.
    ══════════════════════════════════════════════════════════════ */
 
 import type { MsalUser, AuthSyncResponse } from '~/types/auth'
 
-// ── Mock : utilisateur simulé quand USE_MOCK=true ──
-const MOCK_USER: MsalUser = {
-  username: 'admin@klesia.fr',
-  name: 'Administrateur SIDO',
-  roles: ['SIDO_ADMIN'],
-  localAccountId: 'mock-admin-entra-id-001',
-} as MsalUser
-
 export const useAuth = () => {
-  const config = useRuntimeConfig()
-  const IS_MOCK = config.public.useMock === true
+  const { $msal } = useNuxtApp()
+  const { clearDomain } = useDomain()
 
-  // En mode mock, $msal n'est pas nécessaire
-  const { $msal } = IS_MOCK ? { $msal: null } : useNuxtApp()
-
-  // ── État réactif partagé (persiste entre les pages via useState) ──
+  /** Utilisateur MSAL connecté (null si non authentifié) */
   const user = useState<MsalUser | null>('auth:user', () => null)
-  const accessToken = useState<string | null>('auth:token', () => null)
+
+  /** Liste des codes domaine accessibles par l'utilisateur */
   const userDomains = useState<string[]>('auth:domains', () => [])
 
-  // ── Timer d'inactivité — 30 minutes ──
-  const INACTIVITY_MS = 30 * 60 * 1000
-  let inactivityTimer: ReturnType<typeof setTimeout> | null = null
+  /** Rôle ADMIN détecté dans les claims du token */
+  const isAdmin = computed(() => user.value?.roles?.includes('SIDO_ADMIN') ?? false)
 
-  /** Réinitialise le timer à chaque interaction utilisateur */
+  // ── Timer d'inactivité (30 minutes) ──
+  let inactivityTimer: ReturnType<typeof setTimeout> | null = null
+  const INACTIVITY_MS = 30 * 60 * 1000 // 30 min
+
   const resetInactivityTimer = () => {
     if (inactivityTimer) clearTimeout(inactivityTimer)
     inactivityTimer = setTimeout(() => logout('SESSION_EXPIRED'), INACTIVITY_MS)
   }
 
-  // ── Computed ──
-  const isAdmin = computed(() => {
-    return user.value?.roles?.includes('SIDO_ADMIN') ?? false
-  })
-
-  const isAuthenticated = computed(() => user.value !== null)
-
-  // ── Connexion via MSAL popup (ou mock) ──
+  /**
+   * Connexion via MSAL popup.
+   * 1. Ouvre la popup Microsoft → récupère le token
+   * 2. Synchronise l'utilisateur en base via /api/auth/sync
+   * 3. Démarre le timer d'inactivité
+   * 4. Redirige vers /domaines
+   */
   const login = async () => {
-    // Mode mock : bypass MSAL, simuler un admin connecté
-    if (IS_MOCK) {
-      user.value = MOCK_USER
-      accessToken.value = 'mock-access-token'
-      userDomains.value = ['SOTREL']
-      resetInactivityTimer()
-      startActivityListeners()
-      navigateTo('/')
-      return
+    const result = await $msal.loginPopup({
+      scopes: ['openid', 'profile', 'email'],
+    })
+
+    // Extraire les rôles depuis les claims du token
+    const account = result.account as MsalUser
+    if (result.idTokenClaims && 'roles' in result.idTokenClaims) {
+      account.roles = result.idTokenClaims.roles as string[]
+    }
+    user.value = account
+
+    // Synchroniser l'utilisateur en base et récupérer ses domaines
+    const { data } = await useFetch<AuthSyncResponse>('/api/auth/sync', {
+      method: 'POST',
+      body: { account: result.account },
+    })
+    userDomains.value = data.value?.domains ?? []
+
+    // Démarrer le suivi d'inactivité côté client
+    resetInactivityTimer()
+    if (import.meta.client) {
+      const events = ['click', 'keydown', 'scroll', 'mousemove']
+      events.forEach((evt) =>
+        window.addEventListener(evt, resetInactivityTimer, { passive: true }),
+      )
     }
 
-    try {
-      const result = await ($msal as any).loginPopup({
-        scopes: ['openid', 'profile', 'email'],
-      })
-
-      // Extraction des rôles depuis les claims du token
-      const account = result.account as MsalUser
-      const idTokenClaims = result.idTokenClaims as Record<string, unknown>
-      account.roles = (idTokenClaims?.roles as string[]) ?? []
-
-      user.value = account
-      accessToken.value = result.accessToken ?? null
-
-      // Synchroniser l'utilisateur en base et récupérer ses domaines
-      const syncResponse = await $fetch<AuthSyncResponse>('/api/auth/sync', {
-        method: 'POST',
-        body: {
-          entra_id: account.localAccountId,
-          email: account.username,
-          display_name: account.name ?? account.username,
-          roles: account.roles,
-        },
-      })
-
-      userDomains.value = syncResponse.domains ?? []
-
-      // Démarrer le timer d'inactivité + écouter les interactions
-      resetInactivityTimer()
-      startActivityListeners()
-    }
-    catch (error) {
-      console.error('[useAuth] Erreur de connexion MSAL :', error)
-      throw error
-    }
+    navigateTo('/domaines')
   }
 
-  // ── Déconnexion ──
+  /**
+   * Déconnexion — nettoie la session, log l'action, et redirige.
+   * @param reason - Motif : LOGOUT (volontaire) ou SESSION_EXPIRED (inactivité)
+   */
   const logout = async (reason: 'LOGOUT' | 'SESSION_EXPIRED' = 'LOGOUT') => {
-    try {
-      // Enregistrer le log de déconnexion côté serveur
-      await $fetch('/api/auth/logout', {
-        method: 'POST',
-        body: { reason, email: user.value?.username },
-      }).catch(() => {})
-
-      if (!IS_MOCK) {
-        await ($msal as any).logoutPopup()
-      }
-    }
-    catch {
-      // Continuer même si le logout MSAL échoue
-    }
-    finally {
-      // Nettoyage de l'état
-      user.value = null
-      accessToken.value = null
-      userDomains.value = []
-      stopActivityListeners()
-      if (inactivityTimer) clearTimeout(inactivityTimer)
-      navigateTo('/login')
-    }
-  }
-
-  // ── Récupération silencieuse du token ──
-  const getToken = async (): Promise<string | null> => {
-    if (!user.value) return null
-    if (IS_MOCK) return 'mock-access-token'
-    try {
-      const result = await ($msal as any).acquireTokenSilent({
-        account: user.value,
-        scopes: ['openid', 'profile'],
-      })
-      return result.accessToken
-    }
-    catch {
-      return null
-    }
-  }
-
-  // ── Gestion des listeners d'activité ──
-  const ACTIVITY_EVENTS = ['click', 'keydown', 'scroll', 'mousemove'] as const
-
-  const startActivityListeners = () => {
-    if (!import.meta.client) return
-    ACTIVITY_EVENTS.forEach((evt) => {
-      window.addEventListener(evt, resetInactivityTimer, { passive: true })
+    // Logger la déconnexion côté serveur
+    await $fetch('/api/auth/logout', {
+      method: 'POST',
+      body: { reason },
+    }).catch(() => {
+      // Ignorer les erreurs réseau lors de la déconnexion
     })
+
+    // Nettoyer l'état local
+    clearDomain()
+    user.value = null
+    userDomains.value = []
+
+    // Arrêter le timer d'inactivité
+    if (inactivityTimer) {
+      clearTimeout(inactivityTimer)
+      inactivityTimer = null
+    }
+
+    // Retirer les listeners d'activité
+    if (import.meta.client) {
+      const events = ['click', 'keydown', 'scroll', 'mousemove']
+      events.forEach((evt) =>
+        window.removeEventListener(evt, resetInactivityTimer),
+      )
+    }
+
+    // Déconnexion MSAL et redirection
+    try {
+      await $msal.logoutPopup()
+    } catch {
+      // Continuer même si la popup échoue
+    }
+    navigateTo('/login')
   }
 
-  const stopActivityListeners = () => {
-    if (!import.meta.client) return
-    ACTIVITY_EVENTS.forEach((evt) => {
-      window.removeEventListener(evt, resetInactivityTimer)
-    })
-  }
-
-  return {
-    user,
-    accessToken,
-    userDomains,
-    isAdmin,
-    isAuthenticated,
-    login,
-    logout,
-    getToken,
-    resetInactivityTimer,
-  }
+  return { user, userDomains, isAdmin, login, logout, resetInactivityTimer }
 }

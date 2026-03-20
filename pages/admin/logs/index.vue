@@ -1,11 +1,11 @@
 <template>
-  <div class="page-section">
+  <div class="flex flex--column gap--regular">
     <LcTitleSection :type="titleEnum.H1">Logs</LcTitleSection>
 
     <!-- ── Filtres ── -->
-    <div class="search-filters">
-      <div class="search-filters__field">
-        <label>Action</label>
+    <div class="flex flex--align-end flex--wrap gap--medium">
+      <div class="flex flex--column gap--micro search-field">
+        <label class="text--caption-semibold text--neutral-600">Action</label>
         <LcInputSelect
           v-model="actionFilter"
           :source="actionOptions"
@@ -21,7 +21,7 @@
     </div>
 
     <!-- ── Loader ── -->
-    <div v-if="pending" class="empty-state">
+    <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
       <LcLoader variant="primary" size="lg" />
     </div>
 
@@ -63,7 +63,7 @@
 <script setup lang="ts">
 /* ══════════════════════════════════════════════════════════════
    Admin — Logs de connexion et d'accès
-   LcTable avec pagination serveur + filtres date/action
+   LcTable avec pagination serveur + filtre par action
    ══════════════════════════════════════════════════════════════ */
 
 import {
@@ -73,18 +73,17 @@ import {
   LcIcon,
   LcLoader,
   LcTitleSection,
-  LcDatepicker,
   LcInputSelect,
   COLOR_ENUM,
-  DATEPICKER_MODE,
   titleEnum,
 } from "@projetlucie/lc-front-components";
 import { ADMIN_LOGS_HEADERS } from "~/types/table-headers";
 import { formatDate } from "~/utils/formatters";
 
+definePageMeta({ layout: "domain" });
+
 // ── Filtres ──
 const actionFilter = ref<{ name: string; id: string } | null>(null);
-const dateRange = ref<any>(null);
 
 const actionOptions = [
   { name: "Tous", id: "" },
@@ -135,3 +134,9 @@ const actionColor = (action: string): COLOR_ENUM => {
   }
 };
 </script>
+
+<style scoped>
+.search-field {
+  min-width: 180px;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="page-section">
-    <div v-if="pending" class="empty-state">
+  <div class="flex flex--column gap--regular">
+    <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
       <LcLoader variant="primary" size="lg" />
     </div>
 
@@ -20,15 +20,15 @@
       <!-- ── Informations (lecture seule) ── -->
       <LcCardContainer :border="true" padding="regular">
         <template #header>
-          <span class="section-block__title">Informations</span>
+          <span class="text--subheader-semibold text--neutral-800">Informations</span>
         </template>
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-item__label">Email</span>
+        <div class="grid grid--2-col grid--fluid gap--regular">
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Email</span>
             <LcInput :model-value="userData.data.email" readonly />
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Nom affiché</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Nom affiché</span>
             <LcInput :model-value="userData.data.display_name" readonly />
           </div>
         </div>
@@ -37,7 +37,7 @@
       <!-- ── Rôle ── -->
       <LcCardContainer :border="true" padding="regular">
         <template #header>
-          <span class="section-block__title">Rôle</span>
+          <span class="text--subheader-semibold text--neutral-800">Rôle</span>
         </template>
         <LcRadio v-model="form.role" :choices="roleChoices" />
       </LcCardContainer>
@@ -45,10 +45,10 @@
       <!-- ── Domaines accessibles ── -->
       <LcCardContainer :border="true" padding="regular">
         <template #header>
-          <span class="section-block__title">Domaines accessibles</span>
+          <span class="text--subheader-semibold text--neutral-800">Domaines accessibles</span>
         </template>
-        <div class="flex flex--column flex--gap-md">
-          <div v-for="domain in activeDomains" :key="domain.code" class="flex flex--align-center flex--gap-md">
+        <div class="flex flex--column gap--medium">
+          <div v-for="domain in activeDomains" :key="domain.code" class="flex flex--align-center gap--medium">
             <LcToggle
               :model-value="form.domains.includes(domain.code)"
               @update:model-value="toggleDomain(domain.code)"
@@ -62,7 +62,7 @@
       <!-- ── Statut ── -->
       <LcCardContainer :border="true" padding="regular">
         <template #header>
-          <span class="section-block__title">Statut</span>
+          <span class="text--subheader-semibold text--neutral-800">Statut</span>
         </template>
         <LcToggle v-model="form.is_active">
           {{ form.is_active ? 'Utilisateur actif' : 'Utilisateur inactif' }}
@@ -70,7 +70,7 @@
       </LcCardContainer>
 
       <!-- ── Actions ── -->
-      <div class="flex flex--gap-md">
+      <div class="flex gap--medium">
         <LcButton
           variant="primary"
           :disabled="saving"
@@ -109,6 +109,8 @@ import {
 } from '@projetlucie/lc-front-components'
 import type { DomainRecord } from '~/types/auth'
 
+definePageMeta({ layout: 'domain' })
+
 const route = useRoute()
 const userId = route.params.id as string
 
@@ -141,15 +143,16 @@ const activeDomains = computed(() =>
 const saving = ref(false)
 const saved = ref(false)
 
+const roleChoices = [
+  { key: 'ADMIN', label: 'Administrateur' },
+  { key: 'USER', label: 'Utilisateur' },
+]
+
 // ── Toggle domaine ──
 const toggleDomain = (code: string) => {
   const idx = form.value.domains.indexOf(code)
-  if (idx >= 0) {
-    form.value.domains.splice(idx, 1)
-  }
-  else {
-    form.value.domains.push(code)
-  }
+  if (idx >= 0) form.value.domains.splice(idx, 1)
+  else form.value.domains.push(code)
 }
 
 // ── Sauvegarde ──
@@ -166,17 +169,10 @@ const handleSave = async () => {
       },
     })
     saved.value = true
-  }
-  catch (err) {
+  } catch (err) {
     console.error('[Admin user edit]', err)
-  }
-  finally {
+  } finally {
     saving.value = false
   }
 }
-
-const roleChoices = [
-  { key: 'ADMIN', label: 'Administrateur' },
-  { key: 'USER', label: 'Utilisateur' },
-]
 </script>

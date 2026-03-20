@@ -7,26 +7,26 @@
     :close-on-backdrop="true"
   >
     <!-- Chargement -->
-    <div v-if="loading" class="empty-state">
+    <div v-if="loading" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
       <LcLoader variant="primary" size="md" />
     </div>
 
-    <div v-else-if="benef" class="flex flex--column flex--gap-md">
+    <div v-else-if="benef" class="flex flex--column gap--medium">
       <LcTitleSection :type="titleEnum.H3">
         {{ benef.TITRE_BENF }} {{ benef.NOM_BENEF }}
       </LcTitleSection>
 
       <!-- ── Signalétique ── -->
-      <div class="section-block">
-        <span class="section-block__title">Signalétique</span>
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-item__label">N° Bénéficiaire</span>
-            <span class="detail-item__value detail-item__value--mono">{{ benef.NUM_BENEF }}</span>
+      <div class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
+        <span class="text--subheader-semibold text--neutral-800">Signalétique</span>
+        <div class="grid grid--2-col grid--fluid gap--regular">
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">N° Bénéficiaire</span>
+            <span class="text--body text--neutral-900 text-mono">{{ benef.NUM_BENEF }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Adresse</span>
-            <span class="detail-item__value">
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Adresse</span>
+            <span class="text--body text--neutral-900">
               {{ [benef.ADRESSE1_BENEF, benef.ADRESSE2_BENEF, benef.ADRESSE3_BENEF].filter(Boolean).join(', ') }}
               <br v-if="benef.CODE_POSTAL_BENEF || benef.VILLE_BENEF" />
               {{ [benef.CODE_POSTAL_BENEF, benef.VILLE_BENEF].filter(Boolean).join(' ') }}
@@ -36,93 +36,95 @@
       </div>
 
       <!-- ── Capital payé ── -->
-      <div class="section-block">
-        <span class="section-block__title">Capital payé</span>
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-item__label">Montant capital</span>
-            <span class="detail-item__value">{{ formatCurrency(benef.CAPITAL_BENEF) }}</span>
+      <div class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
+        <span class="text--subheader-semibold text--neutral-800">Capital payé</span>
+        <div class="grid grid--2-col grid--fluid gap--regular">
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Montant capital</span>
+            <span class="text--body text--neutral-900">{{ formatCurrency(benef.CAPITAL_BENEF) }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Destinataire</span>
-            <span class="detail-item__value">{{ formatCurrency(benef.DESTINATAIRE_BENEF) }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Destinataire</span>
+            <span class="text--body text--neutral-900">{{ formatCurrency(benef.DESTINATAIRE_BENEF) }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Enfant(s)</span>
-            <span class="detail-item__value">{{ formatCurrency(benef.ENFANT_BENEF) }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Enfant(s)</span>
+            <span class="text--body text--neutral-900">{{ formatCurrency(benef.ENFANT_BENEF) }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Date capital</span>
-            <span class="detail-item__value">{{ formatDate(benef.DATE_CAPITAL_BENEF) }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Date capital</span>
+            <span class="text--body text--neutral-900">{{ formatDate(benef.DATE_CAPITAL_BENEF) }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Mode de paiement</span>
-            <span class="detail-item__value">{{ benef.MODE_PAIE_BENEF || '–' }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Mode de paiement</span>
+            <span class="text--body text--neutral-900">{{ benef.MODE_PAIE_BENEF || '–' }}</span>
           </div>
         </div>
       </div>
 
       <!-- ── Coordonnées bancaires ── -->
-      <div class="section-block">
-        <span class="section-block__title">Coordonnées bancaires</span>
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-item__label">Domiciliation</span>
-            <span class="detail-item__value">{{ benef.DOMICILIATION_BENEF || '–' }}</span>
+      <div class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
+        <span class="text--subheader-semibold text--neutral-800">Coordonnées bancaires</span>
+        <div class="grid grid--2-col grid--fluid gap--regular">
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Domiciliation</span>
+            <span class="text--body text--neutral-900">{{ benef.DOMICILIATION_BENEF || '–' }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Code banque</span>
-            <span class="detail-item__value detail-item__value--mono">{{ benef.CODE_BQ_BENEF || '–' }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Code banque</span>
+            <span class="text--body text--neutral-900 text-mono">{{ benef.CODE_BQ_BENEF || '–' }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Guichet</span>
-            <span class="detail-item__value detail-item__value--mono">{{ benef.GUICHET_BENEF || '–' }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Guichet</span>
+            <span class="text--body text--neutral-900 text-mono">{{ benef.GUICHET_BENEF || '–' }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Compte</span>
-            <span class="detail-item__value detail-item__value--mono">{{ benef.COMPTE_BENEF || '–' }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Compte</span>
+            <span class="text--body text--neutral-900 text-mono">{{ benef.COMPTE_BENEF || '–' }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Clé</span>
-            <span class="detail-item__value detail-item__value--mono">{{ benef.CLE_BENEF || '–' }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Clé</span>
+            <span class="text--body text--neutral-900 text-mono">{{ benef.CLE_BENEF || '–' }}</span>
           </div>
         </div>
       </div>
 
       <!-- ── Complément (conditionnel) ── -->
-      <div v-if="benef.COMPLEMENT_BENEF" class="section-block">
-        <span class="section-block__title">Complément</span>
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-item__label">Montant complément</span>
-            <span class="detail-item__value">{{ formatCurrency(benef.COMPLEMENT_BENEF) }}</span>
+      <div v-if="benef.COMPLEMENT_BENEF" class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
+        <span class="text--subheader-semibold text--neutral-800">Complément</span>
+        <div class="grid grid--2-col grid--fluid gap--regular">
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Montant complément</span>
+            <span class="text--body text--neutral-900">{{ formatCurrency(benef.COMPLEMENT_BENEF) }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Destinataire</span>
-            <span class="detail-item__value">{{ formatCurrency(benef.DESTINATAIRE_COMPL_BENEF) }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Destinataire</span>
+            <span class="text--body text--neutral-900">{{ formatCurrency(benef.DESTINATAIRE_COMPL_BENEF) }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Enfant(s)</span>
-            <span class="detail-item__value">{{ formatCurrency(benef.ENFANT_COMPL_BENEF) }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Enfant(s)</span>
+            <span class="text--body text--neutral-900">{{ formatCurrency(benef.ENFANT_COMPL_BENEF) }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Date complément</span>
-            <span class="detail-item__value">{{ formatDate(benef.DATE_COMPL_BENEF) }}</span>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Date complément</span>
+            <span class="text--body text--neutral-900">{{ formatDate(benef.DATE_COMPL_BENEF) }}</span>
           </div>
         </div>
       </div>
 
       <!-- ── Personnes à charge ── -->
-      <div v-if="charges.length > 0" class="section-block">
-        <span class="section-block__title">Personnes à charge</span>
-        <ul class="charges-list">
-          <li v-for="(charge, index) in charges" :key="index">{{ charge }}</li>
+      <div v-if="charges.length > 0" class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
+        <span class="text--subheader-semibold text--neutral-800">Personnes à charge</span>
+        <ul class="charges-list flex flex--column gap--small">
+          <li v-for="(charge, index) in charges" :key="index" class="text--body text--neutral-800 p--small bg--neutral-200 radius--small">
+            {{ charge }}
+          </li>
         </ul>
       </div>
     </div>
 
     <!-- Footer modal -->
-    <div class="modal-footer">
+    <div class="flex flex--justify-end gap--small mt--regular">
       <LcButton variant="primary" icon-left="x" @click="showModal = false">
         Fermer
       </LcButton>
@@ -170,16 +172,5 @@ const charges = computed(() => {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--small);
-}
-
-.charges-list li {
-  font: var(--fonts--body);
-  color: var(--colors--neutral-800);
-  padding: var(--gutters--small);
-  background: var(--colors--neutral-200);
-  border-radius: var(--radius--small);
 }
 </style>
