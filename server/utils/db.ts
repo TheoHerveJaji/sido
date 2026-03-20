@@ -6,14 +6,20 @@
 
 import mysql from 'mysql2/promise'
 import type { Pool, RowDataPacket } from 'mysql2/promise'
+import { getMockPool } from './db.mock'
 
 let pool: Pool | null = null
 
 /**
  * Retourne le pool MySQL singleton.
  * Créé à la première invocation avec les paramètres de runtimeConfig.
+ * Si USE_MOCK=true, retourne un pool mocké sans connexion MySQL.
  */
 export function getPool(): Pool {
+  if (process.env.USE_MOCK === 'true') {
+    return getMockPool() as unknown as Pool
+  }
+
   if (!pool) {
     const config = useRuntimeConfig()
     pool = mysql.createPool({

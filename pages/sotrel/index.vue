@@ -47,7 +47,7 @@
     </div>
 
     <!-- ── Loader ── -->
-    <div v-if="pending" class="empty-state">
+    <div v-if="pending && hasSearched" class="empty-state">
       <LcLoader variant="primary" size="lg" />
     </div>
 

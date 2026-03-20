@@ -50,6 +50,7 @@ export default defineNuxtConfig({
       entraTenantId: process.env.ENTRA_TENANT_ID || "",
       entraRedirectUri:
         process.env.ENTRA_REDIRECT_URI || "http://localhost:3000/login",
+      useMock: process.env.NUXT_PUBLIC_USE_MOCK === "true",
     },
   },
 

@@ -27,17 +27,15 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
   const segments = route.path.split('/').filter(Boolean)
   if (segments.length === 0) return []
 
-  const items: BreadcrumbItem[] = [
-    { label: 'Accueil', path: '/', isLast: segments.length === 0 },
-  ]
+  // Le premier segment est la racine du domaine (sotrel, admin)
+  // On commence le breadcrumb à partir de ce segment
+  const items: BreadcrumbItem[] = []
 
   let currentPath = ''
   segments.forEach((segment, index) => {
     currentPath += `/${segment}`
     const isLast = index === segments.length - 1
 
-    // Essayer de trouver un label connu, sinon afficher le segment tel quel
-    // Pour les routes dynamiques comme [nodossier], afficher "Dossier XXXX"
     let label = LABELS[segment]
     if (!label) {
       // Segment dynamique (ex: numéro de dossier, id utilisateur)
