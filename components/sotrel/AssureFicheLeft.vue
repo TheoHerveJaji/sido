@@ -1,27 +1,3 @@
-<script setup lang="ts">
-/* ══════════════════════════════════════════════════════════════
-   Colonne gauche de la fiche assuré
-   Blocs : Identité, Sinistre, Correspondant, Employeur
-   ══════════════════════════════════════════════════════════════ */
-
-import {
-  LcCardContainer,
-  LcIcon,
-  LcPill,
-  LcButton,
-  LcTitleSection,
-  COLOR_ENUM,
-  CtaVariant,
-  titleEnum,
-} from '@projetlucie/lc-front-components'
-import type { SotrelRgAssure } from '~/types/database'
-import { formatDate, formatNIR } from '~/utils/formatters'
-
-const props = defineProps<{
-  rg: SotrelRgAssure
-}>()
-</script>
-
 <template>
   <!-- ── Bloc identité (mis en avant) ── -->
   <LcCardContainer :border="true" padding="regular">
@@ -132,10 +108,33 @@ const props = defineProps<{
 
   <!-- ── Bouton retour ── -->
   <LcButton
-    :variant="CtaVariant.SECONDARY"
+    variant="secondary"
     icon-left="arrow-left"
     @click="navigateTo('/sotrel')"
   >
     Retour à la recherche
   </LcButton>
 </template>
+
+<script setup lang="ts">
+/* ══════════════════════════════════════════════════════════════
+   Colonne gauche de la fiche assuré
+   Blocs : Identité, Sinistre, Correspondant, Employeur
+   ══════════════════════════════════════════════════════════════ */
+
+import {
+  LcCardContainer,
+  LcIcon,
+  LcPill,
+  LcButton,
+  LcTitleSection,
+  COLOR_ENUM,
+  titleEnum,
+} from '@projetlucie/lc-front-components'
+import type { SotrelRgAssure } from '~/types/database'
+import { formatDate, formatNIR } from '~/utils/formatters'
+
+const props = defineProps<{
+  rg: SotrelRgAssure
+}>()
+</script>

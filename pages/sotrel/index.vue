@@ -1,3 +1,104 @@
+<template>
+  <div class="page-section">
+    <LcTitleSection :type="titleEnum.H1">Recherche SOTREL</LcTitleSection>
+
+    <!-- ── Filtres de recherche ── -->
+    <div class="search-filters">
+      <div class="search-filters__field">
+        <label>N° Sécurité Sociale</label>
+        <LcInput v-model="noss" placeholder="Ex : 1 85 01 75 XXX" @keydown.enter="canSearch && handleSearch()" />
+      </div>
+      <div class="search-filters__field">
+        <label>Nom</label>
+        <LcInput v-model="nom" placeholder="Nom de l'assuré" @keydown.enter="canSearch && handleSearch()" />
+      </div>
+      <div class="search-filters__field">
+        <label>N° Dossier</label>
+        <LcInput v-model="nodoss" placeholder="Ex : 12345678" @keydown.enter="canSearch && handleSearch()" />
+      </div>
+      <LcButton
+        variant="primary"
+        icon-left="search"
+        :disabled="!canSearch"
+        @click="handleSearch"
+      >
+        Rechercher
+      </LcButton>
+      <LcButton
+        v-if="hasSearched"
+        variant="secondary"
+        icon-left="x"
+        @click="handleReset"
+      >
+        Réinitialiser
+      </LcButton>
+    </div>
+
+    <!-- ── Pills des critères appliqués ── -->
+    <div v-if="activeFilters.length > 0" class="applied-filters">
+      <LcPill
+        v-for="filter in activeFilters"
+        :key="filter.label"
+        :variant="COLOR_ENUM.INFO"
+        size="small"
+      >
+        {{ filter.label }} : {{ filter.value }}
+      </LcPill>
+    </div>
+
+    <!-- ── Loader ── -->
+    <div v-if="pending" class="empty-state">
+      <LcLoader variant="primary" size="lg" />
+    </div>
+
+    <!-- ── État initial (pas encore de recherche) ── -->
+    <div v-else-if="!hasSearched" class="empty-state">
+      <LcIcon name="search" size="display" color="neutral-400" />
+      <p>Saisissez au moins un critère pour lancer la recherche.</p>
+    </div>
+
+    <!-- ── Résultats ── -->
+    <LcTable
+      v-else
+      id="sotrel-recherche-table"
+      :model-value="selectedArray"
+      :current-page="currentPage"
+      :items="data?.data ?? []"
+      :headers="RECHERCHE_HEADERS"
+      :rows-per-page="rowsPerPage"
+      :sort-by="sortBy"
+      :sort-type="sortType"
+      :is-pagination="true"
+      :handle-pagination="true"
+      :total-items-length="data?.total ?? 0"
+      :is-line-clickable="true"
+      :has-border="true"
+      :has-header-radius="true"
+      :can-select-page-length="true"
+      no-result-message="Aucun assuré trouvé"
+      @update:current-page="currentPage = $event"
+      @line-clicked="handleRowClick"
+    >
+      <!-- Slot N° SS : texte monospace -->
+      <template #IDF_NOSS="{ data: cellData }">
+        <span class="text-mono">{{ cellData }}</span>
+      </template>
+
+      <!-- Slot Type sinistre : pill -->
+      <template #TYPE_SINISTRE="{ data: cellData }">
+        <LcPill v-if="cellData" :variant="COLOR_ENUM.INFO" size="small">{{ cellData }}</LcPill>
+        <LcIcon v-else name="minus" color="neutral-400" />
+      </template>
+
+      <!-- Slot Date sinistre : formatée -->
+      <template #DATE_SINISTRE="{ data: cellData }">
+        <span v-if="cellData">{{ formatDate(cellData) }}</span>
+        <LcIcon v-else name="minus" color="neutral-400" />
+      </template>
+    </LcTable>
+  </div>
+</template>
+
 <script setup lang="ts">
 /* ══════════════════════════════════════════════════════════════
    Page recherche SOTREL
@@ -13,7 +114,6 @@ import {
   LcIcon,
   LcLoader,
   LcTitleSection,
-  CtaVariant,
   COLOR_ENUM,
   titleEnum,
 } from '@projetlucie/lc-front-components'
@@ -95,104 +195,3 @@ const activeFilters = computed(() => {
   return filters
 })
 </script>
-
-<template>
-  <div class="page-section">
-    <LcTitleSection :type="titleEnum.H1">Recherche SOTREL</LcTitleSection>
-
-    <!-- ── Filtres de recherche ── -->
-    <div class="search-filters">
-      <div class="search-filters__field">
-        <label>N° Sécurité Sociale</label>
-        <LcInput v-model="noss" placeholder="Ex : 1 85 01 75 XXX" @keydown.enter="canSearch && handleSearch()" />
-      </div>
-      <div class="search-filters__field">
-        <label>Nom</label>
-        <LcInput v-model="nom" placeholder="Nom de l'assuré" @keydown.enter="canSearch && handleSearch()" />
-      </div>
-      <div class="search-filters__field">
-        <label>N° Dossier</label>
-        <LcInput v-model="nodoss" placeholder="Ex : 12345678" @keydown.enter="canSearch && handleSearch()" />
-      </div>
-      <LcButton
-        :variant="CtaVariant.PRIMARY"
-        icon-left="search"
-        :disabled="!canSearch"
-        @click="handleSearch"
-      >
-        Rechercher
-      </LcButton>
-      <LcButton
-        v-if="hasSearched"
-        :variant="CtaVariant.SECONDARY"
-        icon-left="x"
-        @click="handleReset"
-      >
-        Réinitialiser
-      </LcButton>
-    </div>
-
-    <!-- ── Pills des critères appliqués ── -->
-    <div v-if="activeFilters.length > 0" class="applied-filters">
-      <LcPill
-        v-for="filter in activeFilters"
-        :key="filter.label"
-        :variant="COLOR_ENUM.INFO"
-        size="small"
-      >
-        {{ filter.label }} : {{ filter.value }}
-      </LcPill>
-    </div>
-
-    <!-- ── Loader ── -->
-    <div v-if="pending" class="empty-state">
-      <LcLoader variant="primary" size="lg" />
-    </div>
-
-    <!-- ── État initial (pas encore de recherche) ── -->
-    <div v-else-if="!hasSearched" class="empty-state">
-      <LcIcon name="search" size="display" color="neutral-400" />
-      <p>Saisissez au moins un critère pour lancer la recherche.</p>
-    </div>
-
-    <!-- ── Résultats ── -->
-    <LcTable
-      v-else
-      id="sotrel-recherche-table"
-      :model-value="selectedArray"
-      :current-page="currentPage"
-      :items="data?.data ?? []"
-      :headers="RECHERCHE_HEADERS"
-      :rows-per-page="rowsPerPage"
-      :sort-by="sortBy"
-      :sort-type="sortType"
-      :is-pagination="true"
-      :handle-pagination="true"
-      :total-items-length="data?.total ?? 0"
-      :is-line-clickable="true"
-      :has-border="true"
-      :has-header-radius="true"
-      :can-select-page-length="true"
-      no-result-message="Aucun assuré trouvé"
-      @update:current-page="currentPage = $event"
-      @line-clicked="handleRowClick"
-    >
-      <!-- Slot N° SS : texte monospace -->
-      <template #IDF_NOSS="{ data: cellData }">
-        <span class="text-mono">{{ cellData }}</span>
-      </template>
-
-      <!-- Slot Type sinistre : pill -->
-      <template #TYPE_SINISTRE="{ data: cellData }">
-        <LcPill v-if="cellData" :variant="COLOR_ENUM.INFO" size="small">{{ cellData }}</LcPill>
-        <LcIcon v-else name="minus" color="neutral-400" />
-      </template>
-
-      <!-- Slot Date sinistre : formatée -->
-      <template #DATE_SINISTRE="{ data: cellData }">
-        <span v-if="cellData">{{ formatDate(cellData) }}</span>
-        <LcIcon v-else name="minus" color="neutral-400" />
-      </template>
-    </LcTable>
-  </div>
-</template>

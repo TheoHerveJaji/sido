@@ -1,3 +1,32 @@
+<template>
+  <!-- Loader pendant le chargement initial -->
+  <div v-if="pending" class="empty-state">
+    <LcLoader variant="primary" size="lg" />
+  </div>
+
+  <!-- Fiche 2 colonnes -->
+  <div v-else class="fiche-layout">
+    <!-- Colonne gauche : résumé de l'assuré -->
+    <div class="fiche-layout__left">
+      <AssureFicheLeft v-if="rg" :rg="rg" />
+    </div>
+
+    <!-- Zone principale : onglets -->
+    <div class="fiche-layout__right">
+      <LcTab v-model="activeTab" :tabs="tabs" :is-full-width="false" />
+
+      <div class="mt--regular">
+        <TabRenseignements  v-if="activeTab.id === 1" :nodossier="nodossier" :rg="rg" />
+        <TabCapital         v-if="activeTab.id === 2" :nodossier="nodossier" />
+        <TabCourriers       v-if="activeTab.id === 3" :nodossier="nodossier" />
+        <TabFonds           v-if="activeTab.id === 4" :nodossier="nodossier" />
+        <TabBeneficiaires   v-if="activeTab.id === 5" :nodossier="nodossier" />
+        <TabDesignation     v-if="activeTab.id === 6" :nodossier="nodossier" />
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 /* ══════════════════════════════════════════════════════════════
    Fiche assuré SOTREL — Layout 2 colonnes + 6 onglets
@@ -30,32 +59,3 @@ const tabs: TabItem[] = [
 ]
 const activeTab = ref<TabItem>(tabs[0])
 </script>
-
-<template>
-  <!-- Loader pendant le chargement initial -->
-  <div v-if="pending" class="empty-state">
-    <LcLoader variant="primary" size="lg" />
-  </div>
-
-  <!-- Fiche 2 colonnes -->
-  <div v-else class="fiche-layout">
-    <!-- Colonne gauche : résumé de l'assuré -->
-    <div class="fiche-layout__left">
-      <AssureFicheLeft v-if="rg" :rg="rg" />
-    </div>
-
-    <!-- Zone principale : onglets -->
-    <div class="fiche-layout__right">
-      <LcTab v-model="activeTab" :tabs="tabs" :is-full-width="false" />
-
-      <div class="mt--regular">
-        <TabRenseignements  v-if="activeTab.id === 1" :nodossier="nodossier" :rg="rg" />
-        <TabCapital         v-if="activeTab.id === 2" :nodossier="nodossier" />
-        <TabCourriers       v-if="activeTab.id === 3" :nodossier="nodossier" />
-        <TabFonds           v-if="activeTab.id === 4" :nodossier="nodossier" />
-        <TabBeneficiaires   v-if="activeTab.id === 5" :nodossier="nodossier" />
-        <TabDesignation     v-if="activeTab.id === 6" :nodossier="nodossier" />
-      </div>
-    </div>
-  </div>
-</template>

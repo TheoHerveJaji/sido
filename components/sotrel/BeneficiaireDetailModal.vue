@@ -1,39 +1,3 @@
-<script setup lang="ts">
-/* ══════════════════════════════════════════════════════════════
-   Modale détail d'un bénéficiaire
-   Sections : Signalétique, Capital payé, Coordonnées bancaires,
-              Complément (conditionnel), Personnes à charge
-   ══════════════════════════════════════════════════════════════ */
-
-import {
-  LcModal,
-  LcButton,
-  LcLoader,
-  LcTitleSection,
-  CtaVariant,
-  titleEnum,
-} from '@projetlucie/lc-front-components'
-import type { SotrelBenefDetail } from '~/types/database'
-import { formatCurrency, formatDate } from '~/utils/formatters'
-
-const showModal = defineModel<boolean>({ required: true })
-
-const props = defineProps<{
-  benef: SotrelBenefDetail | null
-  loading: boolean
-}>()
-
-// Personnes à charge (CHARGE_001..003_BENEF si non vides)
-const charges = computed(() => {
-  if (!props.benef) return []
-  return [
-    props.benef.CHARGE_001_BENEF,
-    props.benef.CHARGE_002_BENEF,
-    props.benef.CHARGE_003_BENEF,
-  ].filter(Boolean) as string[]
-})
-</script>
-
 <template>
   <LcModal
     id="benef-detail-modal"
@@ -159,12 +123,47 @@ const charges = computed(() => {
 
     <!-- Footer modal -->
     <div class="modal-footer">
-      <LcButton :variant="CtaVariant.PRIMARY" icon-left="x" @click="showModal = false">
+      <LcButton variant="primary" icon-left="x" @click="showModal = false">
         Fermer
       </LcButton>
     </div>
   </LcModal>
 </template>
+
+<script setup lang="ts">
+/* ══════════════════════════════════════════════════════════════
+   Modale détail d'un bénéficiaire
+   Sections : Signalétique, Capital payé, Coordonnées bancaires,
+              Complément (conditionnel), Personnes à charge
+   ══════════════════════════════════════════════════════════════ */
+
+import {
+  LcModal,
+  LcButton,
+  LcLoader,
+  LcTitleSection,
+  titleEnum,
+} from '@projetlucie/lc-front-components'
+import type { SotrelBenefDetail } from '~/types/database'
+import { formatCurrency, formatDate } from '~/utils/formatters'
+
+const showModal = defineModel<boolean>({ required: true })
+
+const props = defineProps<{
+  benef: SotrelBenefDetail | null
+  loading: boolean
+}>()
+
+// Personnes à charge (CHARGE_001..003_BENEF si non vides)
+const charges = computed(() => {
+  if (!props.benef) return []
+  return [
+    props.benef.CHARGE_001_BENEF,
+    props.benef.CHARGE_002_BENEF,
+    props.benef.CHARGE_003_BENEF,
+  ].filter(Boolean) as string[]
+})
+</script>
 
 <style scoped>
 .charges-list {
