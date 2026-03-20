@@ -1,0 +1,4 @@
+/* ── Import du thème Klesia depuis @projetlucie/lc-front-theme ──
+   L'alias @lc-theme est défini dans nuxt.config.ts et pointe vers
+   node_modules/@projetlucie/lc-front-theme/dist/klesia/styles        */
+@import '@lc-theme/_base.css';
