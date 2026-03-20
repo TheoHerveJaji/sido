@@ -1,3 +1,94 @@
+<template>
+  <div class="page-section">
+    <div v-if="pending" class="empty-state">
+      <LcLoader variant="primary" size="lg" />
+    </div>
+
+    <template v-else-if="userData?.data">
+      <LcTitleSection :type="titleEnum.H1">
+        Édition — {{ userData.data.display_name || userData.data.email }}
+      </LcTitleSection>
+
+      <LcAdvisor
+        v-if="saved"
+        :variant="COLOR_ENUM.SUCCESS"
+        :inverse="true"
+        icon-name="check"
+        header-text="Modifications enregistrées"
+      />
+
+      <!-- ── Informations (lecture seule) ── -->
+      <LcCardContainer :border="true" padding="regular">
+        <template #header>
+          <span class="section-block__title">Informations</span>
+        </template>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-item__label">Email</span>
+            <LcInput :model-value="userData.data.email" readonly />
+          </div>
+          <div class="detail-item">
+            <span class="detail-item__label">Nom affiché</span>
+            <LcInput :model-value="userData.data.display_name" readonly />
+          </div>
+        </div>
+      </LcCardContainer>
+
+      <!-- ── Rôle ── -->
+      <LcCardContainer :border="true" padding="regular">
+        <template #header>
+          <span class="section-block__title">Rôle</span>
+        </template>
+        <LcRadio v-model="form.role" :choices="roleChoices" />
+      </LcCardContainer>
+
+      <!-- ── Domaines accessibles ── -->
+      <LcCardContainer :border="true" padding="regular">
+        <template #header>
+          <span class="section-block__title">Domaines accessibles</span>
+        </template>
+        <div class="flex flex--column flex--gap-md">
+          <div v-for="domain in activeDomains" :key="domain.code" class="flex flex--align-center flex--gap-md">
+            <LcToggle
+              :model-value="form.domains.includes(domain.code)"
+              @update:model-value="toggleDomain(domain.code)"
+            >
+              {{ domain.label }} — {{ domain.description }}
+            </LcToggle>
+          </div>
+        </div>
+      </LcCardContainer>
+
+      <!-- ── Statut ── -->
+      <LcCardContainer :border="true" padding="regular">
+        <template #header>
+          <span class="section-block__title">Statut</span>
+        </template>
+        <LcToggle v-model="form.is_active">
+          {{ form.is_active ? 'Utilisateur actif' : 'Utilisateur inactif' }}
+        </LcToggle>
+      </LcCardContainer>
+
+      <!-- ── Actions ── -->
+      <div class="flex flex--gap-md">
+        <LcButton
+          variant="primary"
+          :disabled="saving"
+          @click="handleSave"
+        >
+          {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
+        </LcButton>
+        <LcButton
+          variant="secondary"
+          @click="navigateTo('/admin/users')"
+        >
+          Annuler
+        </LcButton>
+      </div>
+    </template>
+  </div>
+</template>
+
 <script setup lang="ts">
 /* ══════════════════════════════════════════════════════════════
    Admin — Édition d'un utilisateur
@@ -13,7 +104,6 @@ import {
   LcLoader,
   LcTitleSection,
   LcAdvisor,
-  CtaVariant,
   COLOR_ENUM,
   titleEnum,
 } from '@projetlucie/lc-front-components'
@@ -90,94 +180,3 @@ const roleChoices = [
   { key: 'USER', label: 'Utilisateur' },
 ]
 </script>
-
-<template>
-  <div class="page-section">
-    <div v-if="pending" class="empty-state">
-      <LcLoader variant="primary" size="lg" />
-    </div>
-
-    <template v-else-if="userData?.data">
-      <LcTitleSection :type="titleEnum.H1">
-        Édition — {{ userData.data.display_name || userData.data.email }}
-      </LcTitleSection>
-
-      <LcAdvisor
-        v-if="saved"
-        :variant="COLOR_ENUM.SUCCESS"
-        :inverse="true"
-        icon-name="check"
-        header-text="Modifications enregistrées"
-      />
-
-      <!-- ── Informations (lecture seule) ── -->
-      <LcCardContainer :border="true" padding="regular">
-        <template #header>
-          <span class="section-block__title">Informations</span>
-        </template>
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-item__label">Email</span>
-            <LcInput :model-value="userData.data.email" readonly />
-          </div>
-          <div class="detail-item">
-            <span class="detail-item__label">Nom affiché</span>
-            <LcInput :model-value="userData.data.display_name" readonly />
-          </div>
-        </div>
-      </LcCardContainer>
-
-      <!-- ── Rôle ── -->
-      <LcCardContainer :border="true" padding="regular">
-        <template #header>
-          <span class="section-block__title">Rôle</span>
-        </template>
-        <LcRadio v-model="form.role" :choices="roleChoices" />
-      </LcCardContainer>
-
-      <!-- ── Domaines accessibles ── -->
-      <LcCardContainer :border="true" padding="regular">
-        <template #header>
-          <span class="section-block__title">Domaines accessibles</span>
-        </template>
-        <div class="flex flex--column flex--gap-md">
-          <div v-for="domain in activeDomains" :key="domain.code" class="flex flex--align-center flex--gap-md">
-            <LcToggle
-              :model-value="form.domains.includes(domain.code)"
-              @update:model-value="toggleDomain(domain.code)"
-            >
-              {{ domain.label }} — {{ domain.description }}
-            </LcToggle>
-          </div>
-        </div>
-      </LcCardContainer>
-
-      <!-- ── Statut ── -->
-      <LcCardContainer :border="true" padding="regular">
-        <template #header>
-          <span class="section-block__title">Statut</span>
-        </template>
-        <LcToggle v-model="form.is_active">
-          {{ form.is_active ? 'Utilisateur actif' : 'Utilisateur inactif' }}
-        </LcToggle>
-      </LcCardContainer>
-
-      <!-- ── Actions ── -->
-      <div class="flex flex--gap-md">
-        <LcButton
-          :variant="CtaVariant.PRIMARY"
-          :disabled="saving"
-          @click="handleSave"
-        >
-          {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
-        </LcButton>
-        <LcButton
-          :variant="CtaVariant.SECONDARY"
-          @click="navigateTo('/admin/users')"
-        >
-          Annuler
-        </LcButton>
-      </div>
-    </template>
-  </div>
-</template>
