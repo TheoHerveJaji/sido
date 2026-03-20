@@ -1,72 +1,3 @@
-<script setup lang="ts">
-/* ══════════════════════════════════════════════════════════════
-   Admin — Gestion des domaines
-   LcTable listant tous les domaines avec toggle actif/inactif
-   ══════════════════════════════════════════════════════════════ */
-
-import {
-  LcTable,
-  LcPill,
-  LcButton,
-  LcToggle,
-  LcModal,
-  LcInput,
-  LcLoader,
-  LcTitleSection,
-  CtaVariant,
-  COLOR_ENUM,
-  titleEnum,
-} from '@projetlucie/lc-front-components'
-import { ADMIN_DOMAINS_HEADERS } from '~/types/table-headers'
-import type { DomainRecord } from '~/types/auth'
-
-const { data, pending, refresh } = await useFetch<{ data: DomainRecord[] }>('/api/admin/domains')
-
-// ── Toggle actif/inactif ──
-const toggleDomain = async (domain: DomainRecord) => {
-  try {
-    await $fetch(`/api/admin/domains/${domain.id}`, {
-      method: 'PUT',
-      body: { is_active: !domain.is_active },
-    })
-    refresh()
-  }
-  catch (err) {
-    console.error('[Admin domains] Toggle error:', err)
-  }
-}
-
-// ── Modal d'édition ──
-const showEditModal = ref(false)
-const editingDomain = ref<DomainRecord | null>(null)
-const editForm = ref({ label: '', description: '', icon: '' })
-
-const openEditModal = (domain: DomainRecord) => {
-  editingDomain.value = domain
-  editForm.value = {
-    label: domain.label,
-    description: domain.description ?? '',
-    icon: domain.icon ?? '',
-  }
-  showEditModal.value = true
-}
-
-const saveEdit = async () => {
-  if (!editingDomain.value) return
-  try {
-    await $fetch(`/api/admin/domains/${editingDomain.value.id}`, {
-      method: 'PUT',
-      body: editForm.value,
-    })
-    showEditModal.value = false
-    refresh()
-  }
-  catch (err) {
-    console.error('[Admin domains] Save error:', err)
-  }
-}
-</script>
-
 <template>
   <div class="page-section">
     <LcTitleSection :type="titleEnum.H1">Domaines</LcTitleSection>
@@ -89,17 +20,17 @@ const saveEdit = async () => {
       <!-- Statut -->
       <template #is_active="{ data: cellData, item }">
         <LcToggle
-          :model-value="cellData"
+          :model-value="Boolean(cellData)"
           @update:model-value="toggleDomain(item)"
         >
-          {{ cellData ? 'Actif' : 'Inactif' }}
+          {{ cellData ? "Actif" : "Inactif" }}
         </LcToggle>
       </template>
 
       <!-- Actions -->
       <template #actions="{ item }">
         <LcButton
-          :variant="CtaVariant.TERTIARY"
+          variant="tertiary"
           icon-left="edit"
           @click="openEditModal(item)"
         >
@@ -133,15 +64,18 @@ const saveEdit = async () => {
 
         <div class="search-filters__field">
           <label>Icône</label>
-          <LcInput v-model="editForm.icon" placeholder="Nom de l'icône (ex: shield)" />
+          <LcInput
+            v-model="editForm.icon"
+            placeholder="Nom de l'icône (ex: shield)"
+          />
         </div>
 
         <div class="modal-footer">
           <div class="flex flex--gap-md">
-            <LcButton :variant="CtaVariant.SECONDARY" @click="showEditModal = false">
+            <LcButton variant="secondary" @click="showEditModal = false">
               Annuler
             </LcButton>
-            <LcButton :variant="CtaVariant.PRIMARY" @click="saveEdit">
+            <LcButton variant="primary" @click="saveEdit">
               Enregistrer
             </LcButton>
           </div>
@@ -150,3 +84,71 @@ const saveEdit = async () => {
     </LcModal>
   </div>
 </template>
+
+<script setup lang="ts">
+/* ══════════════════════════════════════════════════════════════
+   Admin — Gestion des domaines
+   LcTable listant tous les domaines avec toggle actif/inactif
+   ══════════════════════════════════════════════════════════════ */
+
+import {
+  LcTable,
+  LcPill,
+  LcButton,
+  LcToggle,
+  LcModal,
+  LcInput,
+  LcLoader,
+  LcTitleSection,
+  COLOR_ENUM,
+  titleEnum,
+} from "@projetlucie/lc-front-components";
+import { ADMIN_DOMAINS_HEADERS } from "~/types/table-headers";
+import type { DomainRecord } from "~/types/auth";
+
+const { data, pending, refresh } = await useFetch<{ data: DomainRecord[] }>(
+  "/api/admin/domains",
+);
+
+// ── Toggle actif/inactif ──
+const toggleDomain = async (domain: DomainRecord) => {
+  try {
+    await $fetch(`/api/admin/domains/${domain.id}`, {
+      method: "PUT",
+      body: { is_active: !domain.is_active },
+    });
+    refresh();
+  } catch (err) {
+    console.error("[Admin domains] Toggle error:", err);
+  }
+};
+
+// ── Modal d'édition ──
+const showEditModal = ref(false);
+const editingDomain = ref<DomainRecord | null>(null);
+const editForm = ref({ label: "", description: "", icon: "" });
+
+const openEditModal = (domain: DomainRecord) => {
+  editingDomain.value = domain;
+  editForm.value = {
+    label: domain.label,
+    description: domain.description ?? "",
+    icon: domain.icon ?? "",
+  };
+  showEditModal.value = true;
+};
+
+const saveEdit = async () => {
+  if (!editingDomain.value) return;
+  try {
+    await $fetch(`/api/admin/domains/${editingDomain.value.id}`, {
+      method: "PUT",
+      body: editForm.value,
+    });
+    showEditModal.value = false;
+    refresh();
+  } catch (err) {
+    console.error("[Admin domains] Save error:", err);
+  }
+};
+</script>

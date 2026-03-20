@@ -9,7 +9,11 @@ export default defineNuxtConfig({
   typescript: { strict: true },
   modules: [],
 
-  css: ["~/assets/css/theme.css", "~/assets/css/main.css"],
+  css: [
+    resolve(__dirname, "node_modules/@projetlucie/lc-front-components/dist/style.css"),
+    "~/assets/css/theme.css",
+    "~/assets/css/main.css",
+  ],
 
   vite: {
     resolve: {

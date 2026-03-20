@@ -1,72 +1,3 @@
-<script setup lang="ts">
-/* ══════════════════════════════════════════════════════════════
-   Admin — Logs de connexion et d'accès
-   LcTable avec pagination serveur + filtres date/action
-   ══════════════════════════════════════════════════════════════ */
-
-import {
-  LcTable,
-  LcPill,
-  LcButton,
-  LcIcon,
-  LcLoader,
-  LcTitleSection,
-  LcDatepicker,
-  LcInputSelect,
-  CtaVariant,
-  COLOR_ENUM,
-  DATEPICKER_MODE,
-  titleEnum,
-} from '@projetlucie/lc-front-components'
-import { ADMIN_LOGS_HEADERS } from '~/types/table-headers'
-import { formatDate } from '~/utils/formatters'
-
-// ── Filtres ──
-const actionFilter = ref<string | null>(null)
-const dateRange = ref<any>(null)
-
-const actionOptions = [
-  { name: 'Tous', id: '' },
-  { name: 'Connexion', id: 'LOGIN' },
-  { name: 'Déconnexion', id: 'LOGOUT' },
-  { name: 'Session expirée', id: 'SESSION_EXPIRED' },
-  { name: 'Accès refusé', id: 'ACCESS_DENIED' },
-]
-
-// ── Pagination ──
-const currentPage = ref(1)
-const rowsPerPage = ref(25)
-const sortBy = ref<string[]>(['created_at'])
-const sortType = ref<string[]>(['desc'])
-
-const { data, pending, refresh } = await useFetch<{ data: any[]; total: number }>('/api/admin/logs', {
-  query: computed(() => ({
-    page: currentPage.value,
-    limit: rowsPerPage.value,
-    sortBy: sortBy.value?.[0] ?? 'created_at',
-    sortType: sortType.value?.[0] ?? 'desc',
-    action: actionFilter.value || undefined,
-  })),
-  watch: [currentPage, sortBy, sortType],
-})
-
-const handleFilter = () => {
-  currentPage.value = 1
-  refresh()
-}
-
-/** Couleur du pill selon le type d'action */
-const actionColor = (action: string): COLOR_ENUM => {
-  switch (action) {
-    case 'LOGIN': return COLOR_ENUM.SUCCESS
-    case 'LOGOUT': return COLOR_ENUM.NEUTRAL
-    case 'SESSION_EXPIRED': return COLOR_ENUM.WARNING
-    case 'ACCESS_DENIED': return COLOR_ENUM.DANGER
-    default: return COLOR_ENUM.NEUTRAL
-  }
-}
-</script>
-
 <template>
   <div class="page-section">
     <LcTitleSection :type="titleEnum.H1">Logs</LcTitleSection>
@@ -84,7 +15,7 @@ const actionColor = (action: string): COLOR_ENUM => {
           placeholder="Toutes les actions"
         />
       </div>
-      <LcButton :variant="CtaVariant.PRIMARY" icon-left="filter" @click="handleFilter">
+      <LcButton variant="primary" icon-left="filter" @click="handleFilter">
         Filtrer
       </LcButton>
     </div>
@@ -128,3 +59,79 @@ const actionColor = (action: string): COLOR_ENUM => {
     </LcTable>
   </div>
 </template>
+
+<script setup lang="ts">
+/* ══════════════════════════════════════════════════════════════
+   Admin — Logs de connexion et d'accès
+   LcTable avec pagination serveur + filtres date/action
+   ══════════════════════════════════════════════════════════════ */
+
+import {
+  LcTable,
+  LcPill,
+  LcButton,
+  LcIcon,
+  LcLoader,
+  LcTitleSection,
+  LcDatepicker,
+  LcInputSelect,
+  COLOR_ENUM,
+  DATEPICKER_MODE,
+  titleEnum,
+} from "@projetlucie/lc-front-components";
+import { ADMIN_LOGS_HEADERS } from "~/types/table-headers";
+import { formatDate } from "~/utils/formatters";
+
+// ── Filtres ──
+const actionFilter = ref<{ name: string; id: string } | null>(null);
+const dateRange = ref<any>(null);
+
+const actionOptions = [
+  { name: "Tous", id: "" },
+  { name: "Connexion", id: "LOGIN" },
+  { name: "Déconnexion", id: "LOGOUT" },
+  { name: "Session expirée", id: "SESSION_EXPIRED" },
+  { name: "Accès refusé", id: "ACCESS_DENIED" },
+];
+
+// ── Pagination ──
+const currentPage = ref(1);
+const rowsPerPage = ref(25);
+const sortBy = ref<string[]>(["created_at"]);
+const sortType = ref<string[]>(["desc"]);
+
+const { data, pending, refresh } = await useFetch<{
+  data: any[];
+  total: number;
+}>("/api/admin/logs", {
+  query: computed(() => ({
+    page: currentPage.value,
+    limit: rowsPerPage.value,
+    sortBy: sortBy.value?.[0] ?? "created_at",
+    sortType: sortType.value?.[0] ?? "desc",
+    action: actionFilter.value?.id || undefined,
+  })),
+  watch: [currentPage, sortBy, sortType],
+});
+
+const handleFilter = () => {
+  currentPage.value = 1;
+  refresh();
+};
+
+/** Couleur du pill selon le type d'action */
+const actionColor = (action: string): COLOR_ENUM => {
+  switch (action) {
+    case "LOGIN":
+      return COLOR_ENUM.SUCCESS;
+    case "LOGOUT":
+      return COLOR_ENUM.NEUTRAL;
+    case "SESSION_EXPIRED":
+      return COLOR_ENUM.WARNING;
+    case "ACCESS_DENIED":
+      return COLOR_ENUM.DANGER;
+    default:
+      return COLOR_ENUM.NEUTRAL;
+  }
+};
+</script>
