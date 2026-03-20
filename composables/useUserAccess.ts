@@ -1,14 +1,15 @@
-/* ══════════════════════════════════════════════════
-   Composable de vérification des droits par domaine
-   Dépend de useAuth() pour les domaines de l'utilisateur
-   ══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   Composable de vérification d'accès domaine
+   Vérifie si l'utilisateur connecté a accès à un domaine donné.
+   Les ADMIN ont accès à tous les domaines.
+   ══════════════════════════════════════════════════════════════ */
 
 export const useUserAccess = () => {
   const { userDomains, isAdmin } = useAuth()
 
   /**
-   * Vérifie si l'utilisateur a accès à un domaine donné.
-   * Les ADMIN ont accès à tous les domaines.
+   * Vérifie si l'utilisateur a accès au domaine spécifié.
+   * Les ADMIN ont accès implicite à tous les domaines.
    */
   const hasDomainAccess = (code: string): boolean => {
     if (isAdmin.value) return true

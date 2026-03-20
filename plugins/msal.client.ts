@@ -1,6 +1,7 @@
 /* ══════════════════════════════════════════════════════════════
-   Plugin client-only — Initialise MSAL (Microsoft Entra ID)
-   Fournit l'instance PublicClientApplication via $msal
+   Plugin MSAL (client-only) — Initialisation de @azure/msal-browser
+   Ce plugin crée l'instance PublicClientApplication et la fournit
+   à toute l'application via useNuxtApp().$msal
    ══════════════════════════════════════════════════════════════ */
 
 import { PublicClientApplication, type Configuration } from '@azure/msal-browser'

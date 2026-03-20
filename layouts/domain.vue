@@ -1,33 +1,18 @@
 <script setup lang="ts">
 /* ══════════════════════════════════════════════════
-   Layout applicatif — Header contextuel + Contenu
-   Sans sidebar, sans LcViewWrapper
+   Layout Domain — Layout applicatif principal
+   Header fixe (DomainHeader) + Breadcrumb + Contenu
+   Utilisé par toutes les pages /sotrel/** et /admin/**
    ══════════════════════════════════════════════════ */
 </script>
 
 <template>
-  <div class="app-layout">
-    <AppHeader />
+  <div class="flex flex--column min-h--100vh">
+    <DomainHeader />
 
-    <main class="app-layout__content">
+    <main class="flex--1 p--regular flex flex--column gap--small">
       <AppBreadcrumb />
       <slot />
     </main>
   </div>
 </template>
-
-<style scoped>
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.app-layout__content {
-  flex: 1;
-  padding: var(--gutters--regular);
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--small);
-}
-</style>

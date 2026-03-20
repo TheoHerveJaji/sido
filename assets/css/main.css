@@ -1,199 +1,37 @@
 /* ══════════════════════════════════════════════════════════════
    SIDO – Sarcophage · Styles globaux
-   Toutes les valeurs utilisent les tokens CSS du thème Klesia
+   CSS custom uniquement quand aucune classe utilitaire lc-front-components ne couvre le besoin.
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Grille de détail (clé/valeur, 2 colonnes) ── */
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--gutters--regular);
+/* ── Variable hauteur header domaine ── */
+:root {
+  --domain-header-height: 64px;
 }
 
-.detail-item {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--micro);
-}
-
-.detail-item__label {
-  font: var(--fonts--caption-semibold);
-  color: var(--colors--neutral-600);
-}
-
-.detail-item__value {
-  font: var(--fonts--body);
-  color: var(--colors--neutral-900);
-}
-
-.detail-item__value--mono {
-  font-family: var(--fonts--secondary);
-  letter-spacing: 0.5px;
-}
-
-/* ── Layout fiche assuré (2 colonnes : sidebar fixe + contenu) ── */
-.fiche-layout {
-  display: flex;
-  gap: var(--gutters--regular);
-  align-items: flex-start;
-}
-
+/* ── Layout fiche assuré — sidebar sticky (calc non couvert par utilitaires) ── */
 .fiche-layout__left {
-  width: 300px;
+  width: 280px;
   flex-shrink: 0;
   position: sticky;
-  top: var(--gutters--regular);
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--regular);
+  top: calc(var(--domain-header-height) + var(--gutters--regular));
+  height: fit-content;
+  max-height: calc(100vh - var(--domain-header-height) - var(--gutters--regular) * 2);
+  overflow-y: auto;
 }
 
 .fiche-layout__right {
-  flex: 1;
   min-width: 0;
 }
 
-/* ── Section de page avec titre ── */
-.page-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--regular);
-}
-
-.page-section__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--gutters--medium);
-}
-
-/* ── Grille de tuiles (accueil) ── */
+/* ── Grille de tuiles — auto-fill minmax (pas d'utilitaire) ── */
 .domain-tiles {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--gutters--regular);
 }
 
-.domain-tile {
-  cursor: pointer;
-  transition: box-shadow 0.2s ease;
-}
-
-.domain-tile:hover {
-  box-shadow: var(--shadows--hover);
-}
-
-/* ── Filtres de recherche ── */
-.search-filters {
-  display: flex;
-  gap: var(--gutters--medium);
-  align-items: flex-end;
-  flex-wrap: wrap;
-}
-
-.search-filters__field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--micro);
-  min-width: 180px;
-}
-
-.search-filters__field label {
-  font: var(--fonts--caption-semibold);
-  color: var(--colors--neutral-600);
-}
-
-/* ── Pills appliqués (critères de recherche actifs) ── */
-.applied-filters {
-  display: flex;
-  gap: var(--gutters--small);
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-/* ── Section conditionnelle (affichée seulement si données présentes) ── */
-.section-block {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--medium);
-  padding: var(--gutters--regular);
-  background: var(--colors--neutral-100);
-  border-radius: var(--radius--medium);
-}
-
-.section-block__title {
-  font: var(--fonts--subheader-semibold);
-  color: var(--colors--neutral-800);
-}
-
-/* ── Modal footer ── */
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: var(--gutters--regular);
-}
-
-/* ── États vides ── */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--gutters--medium);
-  padding: var(--gutters--jumbo) var(--gutters--regular);
-  color: var(--colors--neutral-600);
-  text-align: center;
-}
-
-/* ── Utilitaires ── */
-.text-right {
-  text-align: right;
-}
-
+/* ── Texte monospace (letter-spacing non couvert par utilitaires) ── */
 .text-mono {
   font-family: var(--fonts--secondary);
   letter-spacing: 0.5px;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex--gap-sm {
-  gap: var(--gutters--small);
-}
-
-.flex--gap-md {
-  gap: var(--gutters--medium);
-}
-
-.flex--align-center {
-  align-items: center;
-}
-
-.flex--justify-between {
-  justify-content: space-between;
-}
-
-.flex--justify-end {
-  justify-content: flex-end;
-}
-
-.flex--wrap {
-  flex-wrap: wrap;
-}
-
-.flex--column {
-  flex-direction: column;
-}
-
-.mt--regular {
-  margin-top: var(--gutters--regular);
-}
-
-.mb--regular {
-  margin-bottom: var(--gutters--regular);
-}
-
-.w-full {
-  width: 100%;
 }

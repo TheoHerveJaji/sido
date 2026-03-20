@@ -18,7 +18,7 @@ const { data, pending } = await useFetch<{ data: SotrelFonds[] }>(
 </script>
 
 <template>
-  <div v-if="pending" class="empty-state">
+  <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
     <LcLoader variant="primary" size="md" />
   </div>
 
@@ -34,7 +34,7 @@ const { data, pending } = await useFetch<{ data: SotrelFonds[] }>(
     no-result-message="Aucune demande de fonds pour ce dossier"
   >
     <template #MONTANT="{ data: cellData }">
-      <span class="text-right">{{ formatCurrency(cellData) }}</span>
+      <span class="text--right">{{ formatCurrency(cellData) }}</span>
     </template>
   </LcTable>
 </template>

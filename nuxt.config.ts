@@ -10,7 +10,10 @@ export default defineNuxtConfig({
   modules: [],
 
   css: [
-    resolve(__dirname, "node_modules/@projetlucie/lc-front-components/dist/style.css"),
+    resolve(
+      __dirname,
+      "node_modules/@projetlucie/lc-front-components/dist/style.css",
+    ),
     "~/assets/css/theme.css",
     "~/assets/css/main.css",
   ],
@@ -35,7 +38,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Variables serveur uniquement (DB)
+    /* Variables serveur uniquement (DB) */
     dbHost: process.env.DB_HOST || "",
     dbPort: process.env.DB_PORT || "3306",
     dbUser: process.env.DB_USER || "",
@@ -43,14 +46,14 @@ export default defineNuxtConfig({
     dbName: process.env.DB_NAME || "SDO_SARCOPHAGE",
 
     public: {
-      // Variables accessibles côté client
+      /* Variables accessibles côté client */
       appName: "SIDO – Sarcophage",
       appVersion: "1.0.0",
       entraClientId: process.env.ENTRA_CLIENT_ID || "",
       entraTenantId: process.env.ENTRA_TENANT_ID || "",
       entraRedirectUri:
         process.env.ENTRA_REDIRECT_URI || "http://localhost:3000/login",
-      useMock: process.env.NUXT_PUBLIC_USE_MOCK === "true",
+      fakeLogin: process.env.FAKE_LOGIN === "true",
     },
   },
 

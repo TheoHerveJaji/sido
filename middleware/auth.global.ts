@@ -1,31 +1,42 @@
 /* ══════════════════════════════════════════════════════════════
    Middleware global d'authentification
-   - Protège toutes les routes sauf /login
-   - Vérifie le rôle ADMIN pour /admin/*
-   - Vérifie l'accès domaine SOTREL pour /sotrel/*
+   Protège toutes les routes sauf /login.
+   Gère la persistance du domaine courant au refresh.
    ══════════════════════════════════════════════════════════════ */
 
-// Routes accessibles sans authentification
 const PUBLIC_ROUTES = ['/login']
 
 export default defineNuxtRouteMiddleware((to) => {
   const { user, isAdmin, userDomains } = useAuth()
+  const { currentDomain, setDomain } = useDomain()
 
-  // Autoriser les routes publiques
+  // ── Routes publiques : toujours accessibles ──
   if (PUBLIC_ROUTES.includes(to.path)) return
 
-  // Rediriger vers /login si non authentifié
-  if (!user.value) {
-    return navigateTo('/login')
+  // ── Non authentifié → redirection login ──
+  if (!user.value) return navigateTo('/login')
+
+  // ── Racine / → redirection vers /domaines ──
+  if (to.path === '/') return navigateTo('/domaines')
+
+  // ── /sotrel/* : vérifier l'accès au domaine SOTREL ──
+  if (to.path.startsWith('/sotrel')) {
+    // Au refresh, le domaine peut ne pas être en mémoire réactive
+    // mais être encore dans sessionStorage (lu par useDomain)
+    if (!currentDomain.value) {
+      if (userDomains.value.includes('SOTREL') || isAdmin.value) {
+        // Re-persister automatiquement le domaine
+        setDomain('SOTREL')
+      } else {
+        return navigateTo('/domaines')
+      }
+    }
   }
 
-  // Protéger les routes /admin/* — réservées aux ADMIN
+  // ── /admin/* : réservé aux ADMIN ──
   if (to.path.startsWith('/admin') && !isAdmin.value) {
-    return navigateTo('/')
+    return navigateTo('/domaines')
   }
 
-  // Vérifier l'accès au domaine SOTREL
-  if (to.path.startsWith('/sotrel') && !userDomains.value.includes('SOTREL') && !isAdmin.value) {
-    return navigateTo('/')
-  }
+  // ── /domaines : utilisateur authentifié OK, pas de restriction ──
 })

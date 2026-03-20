@@ -1,26 +1,26 @@
 <template>
-  <div class="login-page">
+  <div class="login-card-wrapper">
     <LcCardContainer
       :border="true"
       :shadow="true"
       padding="big"
-      class="login-card"
     >
-      <div class="login-card__content">
+      <div class="flex flex--column gap--large">
         <!-- Logo & titre -->
-        <div class="login-card__header">
+        <div class="flex flex--column flex--align-center gap--medium text--center">
           <LcIcon name="shield" size="display" color="primary" />
-          <h1 class="login-card__title">SIDO – Sarcophage</h1>
-          <p class="login-card__subtitle">Archivage des données legacy</p>
+          <h1 class="text--h1 text--primary m--none">SIDO – Sarcophage</h1>
+          <p class="text--body text--neutral-600 m--none">Archivage des données legacy</p>
         </div>
 
         <!-- Message d'erreur -->
-        <p v-if="error" class="login-card__error">
+        <p v-if="error" class="text--body text--danger text--center m--none py--small px--medium bg--danger-100 radius--small">
           {{ error }}
         </p>
 
         <!-- Bouton de connexion -->
         <LcButton
+          v-if="!isFakeLogin"
           variant="primary"
           size="big"
           :disabled="loading"
@@ -32,17 +32,47 @@
             loading ? "Connexion en cours..." : "Se connecter avec Microsoft"
           }}
         </LcButton>
-
-        <p class="login-card__info">Authentification via Microsoft Entra ID</p>
+        <LcButton
+          v-else
+          variant="primary"
+          size="big"
+          block
+          icon-left="log-in"
+          @click="handleFakeLogin"
+        >
+          Entrer dans l'app
+        </LcButton>
+        <p class="text--caption text--neutral-600 text--center m--none">
+          {{
+            isFakeLogin
+              ? "Mode test sans authentification Microsoft"
+              : "Authentification via Microsoft Entra ID"
+          }}
+        </p>
       </div>
     </LcCardContainer>
   </div>
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig();
+const isFakeLogin = config.public.fakeLogin;
+
+const handleFakeLogin = () => {
+  // Simule un utilisateur connecté (mock admin)
+  user.value = {
+    id: "1",
+    entra_id: "mock-admin-entra-id-001",
+    email: "admin@mock.fr",
+    display_name: "Admin Mock",
+    roles: ["SIDO_ADMIN"],
+  };
+  userDomains.value = ["ALL"];
+  navigateTo("/domaines");
+};
 /* ══════════════════════════════════════════════════
    Page de connexion — Entra ID via MSAL
-   Layout sans sidebar/header (plein écran centré)
+   Layout login : page épurée, centrée, sans header
    ══════════════════════════════════════════════════ */
 
 import {
@@ -51,17 +81,17 @@ import {
   LcIcon,
 } from "@projetlucie/lc-front-components";
 
-definePageMeta({ layout: false });
+definePageMeta({ layout: "login" });
 
-const { login, isAuthenticated } = useAuth();
+const { login, user } = useAuth();
 const loading = ref(false);
 const error = ref<string | null>(null);
 
 // Redirect si déjà authentifié
 watch(
-  isAuthenticated,
-  (authenticated) => {
-    if (authenticated) navigateTo("/");
+  user,
+  (u) => {
+    if (u) navigateTo("/domaines");
   },
   { immediate: true },
 );
@@ -71,7 +101,6 @@ const handleLogin = async () => {
   error.value = null;
   try {
     await login();
-    navigateTo("/");
   } catch (err) {
     error.value = "Erreur lors de la connexion. Veuillez réessayer.";
     console.error("[Login]", err);
@@ -82,60 +111,8 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-.login-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: var(--colors--neutral-200);
-  padding: var(--gutters--regular);
-}
-
-.login-card {
+.login-card-wrapper {
   width: 100%;
   max-width: 420px;
-}
-
-.login-card__content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gutters--large);
-}
-
-.login-card__header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--gutters--medium);
-  text-align: center;
-}
-
-.login-card__title {
-  font: var(--fonts--h1);
-  color: var(--colors--primary);
-  margin: 0;
-}
-
-.login-card__subtitle {
-  font: var(--fonts--body);
-  color: var(--colors--neutral-600);
-  margin: 0;
-}
-
-.login-card__error {
-  font: var(--fonts--body);
-  color: var(--colors--danger);
-  text-align: center;
-  margin: 0;
-  padding: var(--gutters--small) var(--gutters--medium);
-  background: var(--colors--danger-100);
-  border-radius: var(--radius--small);
-}
-
-.login-card__info {
-  font: var(--fonts--caption);
-  color: var(--colors--neutral-600);
-  text-align: center;
-  margin: 0;
 }
 </style>
