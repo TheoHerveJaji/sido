@@ -61,6 +61,8 @@ import {
 } from "@projetlucie/lc-front-components";
 import type { DomainRecord } from "~/types/auth";
 
+definePageMeta({ layout: "domain-select" });
+
 const { user, isAdmin, userDomains } = useAuth();
 
 // Récupérer les domaines actifs depuis l'API

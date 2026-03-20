@@ -1,33 +1,30 @@
 <script setup lang="ts">
 /* ══════════════════════════════════════════════════
-   Layout principal — LcViewWrapper
-   Structure : Header + Sidebar + Breadcrumb + Contenu
+   Layout applicatif — Header contextuel + Contenu
+   Sans sidebar, sans LcViewWrapper
    ══════════════════════════════════════════════════ */
-
-import { LcViewWrapper } from '@projetlucie/lc-front-components'
 </script>
 
 <template>
-  <LcViewWrapper>
-    <template #header>
-      <AppHeader />
-    </template>
+  <div class="app-layout">
+    <AppHeader />
 
-    <template #sidebar>
-      <AppSidebar />
-    </template>
-
-    <template #content>
-      <div class="layout-content">
-        <AppBreadcrumb />
-        <slot />
-      </div>
-    </template>
-  </LcViewWrapper>
+    <main class="app-layout__content">
+      <AppBreadcrumb />
+      <slot />
+    </main>
+  </div>
 </template>
 
 <style scoped>
-.layout-content {
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-layout__content {
+  flex: 1;
   padding: var(--gutters--regular);
   display: flex;
   flex-direction: column;
