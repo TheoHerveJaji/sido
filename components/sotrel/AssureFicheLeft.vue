@@ -3,31 +3,41 @@
   <LcCardContainer :border="true" padding="regular">
     <div class="flex flex--column gap--small">
       <p>{{ rg.NOM }} {{ rg.PRENOM }}</p>
+      <div class="flex flex--row gap--regular">
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">
+            <LcIcon name="folder" size="caption" color="neutral-600" /> N°
+            Dossier
+          </span>
+          <span class="text--body text--neutral-900">{{
+            rg.IDF_NODOSSIER
+          }}</span>
+        </div>
 
-      <div class="flex flex--column gap--micro">
-        <span class="text--caption-semibold text--neutral-600">
-          <LcIcon name="folder" size="caption" color="neutral-600" /> N° Dossier
-        </span>
-        <span class="text--body text--neutral-900">{{ rg.IDF_NODOSSIER }}</span>
-      </div>
-
-      <div class="flex flex--column gap--micro">
-        <span class="text--caption-semibold text--neutral-600">
-          <LcIcon name="shield" size="caption" color="neutral-600" /> NIR
-        </span>
-        <span class="text--body text--neutral-900">{{ formatNIR(rg.IDF_NOSS) }}</span>
+        <div class="flex flex--column gap--micro">
+          <span class="text--caption-semibold text--neutral-600">
+            <LcIcon name="shield" size="caption" color="neutral-600" /> NIR
+          </span>
+          <span class="text--body text--neutral-900">
+            {{ formatNIR(rg.IDF_NOSS) }}
+          </span>
+        </div>
       </div>
 
       <div v-if="rg.CODE_ETAT" class="flex flex--column gap--micro">
         <div class="flex flex--row gap--regular">
           <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Code état</span>
+            <span class="text--caption-semibold text--neutral-600">
+              Code état
+            </span>
             <LcPill :variant="COLOR_ENUM.NEUTRAL" size="small">
               {{ rg.CODE_ETAT }}
             </LcPill>
           </div>
           <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Date état</span>
+            <span class="text--caption-semibold text--neutral-600">
+              Date état
+            </span>
             <span v-if="rg.DATE_ETAT" class="text--body text--neutral-900">
               {{ formatDate(rg.DATE_ETAT) }}
             </span>
@@ -45,17 +55,21 @@
 
         <div class="flex flex--row gap--regular">
           <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Type sinistre</span>
+            <span class="text--caption-semibold text--neutral-600">
+              Type sinistre
+            </span>
             <LcPill
               v-if="rg.TYPE_SINISTRE"
-              :variant="COLOR_ENUM.INFO"
+              :variant="COLOR_ENUM.NEUTRAL"
               size="small"
             >
               {{ rg.TYPE_SINISTRE }}
             </LcPill>
           </div>
           <div v-if="rg.ORGANISME" class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Organisme</span>
+            <span class="text--caption-semibold text--neutral-600">
+              Organisme
+            </span>
             <span class="text--body text--neutral-900">{{ rg.ORGANISME }}</span>
           </div>
         </div>
@@ -63,17 +77,21 @@
 
       <div class="flex flex--row gap--regular">
         <div v-if="rg.DATE_SINISTRE" class="flex flex--column gap--micro">
-          <span class="text--caption-semibold text--neutral-600">Date sinistre</span>
-          <span class="text--body text--neutral-900">{{
-            formatDate(rg.DATE_SINISTRE)
-          }}</span>
+          <span class="text--caption-semibold text--neutral-600">
+            Date sinistre
+          </span>
+          <span class="text--body text--neutral-900">
+            {{ formatDate(rg.DATE_SINISTRE) }}
+          </span>
         </div>
 
         <div v-if="rg.DATE_ARRET" class="flex flex--column gap--micro">
-          <span class="text--caption-semibold text--neutral-600">Date arrêt travail</span>
-          <span class="text--body text--neutral-900">{{
-            formatDate(rg.DATE_ARRET)
-          }}</span>
+          <span class="text--caption-semibold text--neutral-600">
+            Date arrêt travail
+          </span>
+          <span class="text--body text--neutral-900">
+            {{ formatDate(rg.DATE_ARRET) }}
+          </span>
         </div>
       </div>
     </div>
@@ -82,13 +100,15 @@
   <!-- ── Bloc correspondant (conditionnel) ── -->
   <LcCardContainer v-if="rg.NOM_CORRESPONDANT" :border="true" padding="regular">
     <div class="flex flex--column gap--small">
-      <span class="text--subheader-semibold text--neutral-800">Correspondant</span>
+      <span class="text--subheader-semibold text--neutral-800">
+        Correspondant
+      </span>
 
       <div class="flex flex--column gap--micro">
         <span class="text--caption-semibold text--neutral-600">Nom</span>
-        <span class="text--body text--neutral-900"
-          >{{ rg.TITRE_CORRESPONDANT }} {{ rg.NOM_CORRESPONDANT }}</span
-        >
+        <span class="text--body text--neutral-900">
+          {{ rg.TITRE_CORRESPONDANT }} {{ rg.NOM_CORRESPONDANT }}
+        </span>
       </div>
 
       <div class="flex flex--column gap--micro">
@@ -119,14 +139,18 @@
 
       <div class="flex flex--column gap--micro">
         <span class="text--caption-semibold text--neutral-600">N° Firme</span>
-        <span class="text--body text--neutral-900 text-mono">{{
-          rg.NUMERO_FIRME
-        }}</span>
+        <span class="text--body text--neutral-900 text-mono">
+          {{ rg.NUMERO_FIRME }}
+        </span>
       </div>
 
       <div class="flex flex--column gap--micro">
-        <span class="text--caption-semibold text--neutral-600">Raison sociale</span>
-        <span class="text--body text--neutral-900">{{ rg.RAISON_SOCIALE }}</span>
+        <span class="text--caption-semibold text--neutral-600">
+          Raison sociale
+        </span>
+        <span class="text--body text--neutral-900">
+          {{ rg.RAISON_SOCIALE }}
+        </span>
       </div>
 
       <div class="flex flex--column gap--micro">
