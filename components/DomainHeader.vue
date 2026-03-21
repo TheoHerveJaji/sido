@@ -79,3 +79,9 @@ const handleChangeDomain = () => {
   color: var(--colors--neutral-700);
 }
 </style>
+
+<style>
+.header_container .header_container__content {
+  height: 3.5rem;
+}
+</style>
