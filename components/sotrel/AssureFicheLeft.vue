@@ -70,7 +70,11 @@
             <span class="text--caption-semibold text--neutral-600">
               Organisme
             </span>
-            <span class="text--body text--neutral-900">{{ rg.ORGANISME }}</span>
+            <span
+              class="text--body text--neutral-900 flex flex--align-center justify-center gap--small"
+            >
+              {{ rg.ORGANISME }}
+            </span>
           </div>
         </div>
       </div>
