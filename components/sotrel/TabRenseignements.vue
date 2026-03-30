@@ -93,7 +93,7 @@ const etatsHistorique = computed(() => {
         </div>
         <div class="flex flex--column gap--micro">
           <span class="text--caption-semibold text--neutral-600">N° FIT</span>
-          <span class="text--body text--neutral-900 text-mono">{{
+          <span class="text--body text--neutral-900">{{
             rg.IDF_FIT || "–"
           }}</span>
         </div>

@@ -127,7 +127,8 @@
               .filter(Boolean)
               .join(", ")
           }}
-          <br v-if="rg.CP_CORRESPONDANT || rg.VILLE_CORRESP" />
+        </span>
+        <span class="text--body text--neutral-900">
           {{
             [rg.CP_CORRESPONDANT, rg.VILLE_CORRESP].filter(Boolean).join(" ")
           }}
