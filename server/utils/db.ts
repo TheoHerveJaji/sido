@@ -4,11 +4,11 @@
    obtenir la connexion et exécuter des requêtes.
    ══════════════════════════════════════════════════════════════ */
 
-import mysql from 'mysql2/promise'
-import type { Pool, RowDataPacket } from 'mysql2/promise'
-import { getMockPool } from './db.mock'
+import mysql from "mysql2/promise";
+import type { Pool, RowDataPacket } from "mysql2/promise";
+import { getMockPool } from "./db.mock";
 
-let pool: Pool | null = null
+let pool: Pool | null = null;
 
 /**
  * Retourne le pool MySQL singleton.
@@ -16,12 +16,21 @@ let pool: Pool | null = null
  * Si USE_MOCK=true, retourne un pool mocké sans connexion MySQL.
  */
 export function getPool(): Pool {
-  if (process.env.USE_MOCK === 'true') {
-    return getMockPool() as unknown as Pool
+  if (process.env.USE_MOCK === "true") {
+    return getMockPool() as unknown as Pool;
   }
 
   if (!pool) {
-    const config = useRuntimeConfig()
+    const config = useRuntimeConfig();
+    const sslOptions =
+      config.dbEnableSsl === "true"
+        ? {
+            ssl: {
+              rejectUnauthorized:
+                config.dbRejectUnauthorized === "false" ? false : true,
+            },
+          }
+        : {};
     pool = mysql.createPool({
       host: config.dbHost,
       port: Number(config.dbPort) || 3306,
@@ -31,9 +40,10 @@ export function getPool(): Pool {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-    })
+      ...sslOptions,
+    });
   }
-  return pool
+  return pool;
 }
 
 /**
@@ -55,30 +65,30 @@ export async function executePagedQuery<T extends RowDataPacket>(
   sortBy?: string,
   sortType?: string,
 ): Promise<{ data: T[]; total: number }> {
-  const db = getPool()
+  const db = getPool();
 
   // Sécurisation du tri — whitelist les directions autorisées
-  const direction = sortType?.toLowerCase() === 'desc' ? 'DESC' : 'ASC'
+  const direction = sortType?.toLowerCase() === "desc" ? "DESC" : "ASC";
 
   // Requête COUNT pour le total
-  const countQuery = `SELECT COUNT(*) as total FROM (${baseQuery}) as countQuery`
-  const [countRows] = await db.query<RowDataPacket[]>(countQuery, params)
-  const total = countRows[0]?.total ?? 0
+  const countQuery = `SELECT COUNT(*) as total FROM (${baseQuery}) as countQuery`;
+  const [countRows] = await db.query<RowDataPacket[]>(countQuery, params);
+  const total = countRows[0]?.total ?? 0;
 
   // Ajout du ORDER BY si spécifié (la colonne est validée côté appelant)
-  let pagedQuery = baseQuery
+  let pagedQuery = baseQuery;
   if (sortBy) {
     // Protection contre l'injection SQL : on n'autorise que les caractères alphanumériques et _
-    const safeSortBy = sortBy.replace(/[^a-zA-Z0-9_]/g, '')
-    pagedQuery += ` ORDER BY ${safeSortBy} ${direction}`
+    const safeSortBy = sortBy.replace(/[^a-zA-Z0-9_]/g, "");
+    pagedQuery += ` ORDER BY ${safeSortBy} ${direction}`;
   }
 
   // Ajout LIMIT / OFFSET
-  const offset = (page - 1) * limit
-  pagedQuery += ' LIMIT ? OFFSET ?'
-  const pagedParams = [...params, limit, offset]
+  const offset = (page - 1) * limit;
+  pagedQuery += " LIMIT ? OFFSET ?";
+  const pagedParams = [...params, limit, offset];
 
-  const [rows] = await db.query<T[]>(pagedQuery, pagedParams)
+  const [rows] = await db.query<T[]>(pagedQuery, pagedParams);
 
-  return { data: rows, total }
+  return { data: rows, total };
 }
