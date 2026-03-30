@@ -228,7 +228,7 @@ const handleReset = () => {
 };
 
 const handleRowClick = (row: SotrelRecherche) => {
-  navigateTo(`/sotrel/${row.IDF_NODOSS}`);
+  navigateTo(`/sotrel/${row.IDF_NODOSSIER}`);
 };
 
 // Critères actifs pour les pills
