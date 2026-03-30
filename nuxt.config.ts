@@ -44,6 +44,8 @@ export default defineNuxtConfig({
     dbUser: process.env.DB_USER || "",
     dbPassword: process.env.DB_PASSWORD || "",
     dbName: process.env.DB_NAME || "SDO_SARCOPHAGE",
+    dbEnableSsl: process.env.DB_ENABLE_SSL || "false",
+    dbRejectUnauthorized: process.env.DB_REJECT_UNAUTHORIZED || "true",
 
     public: {
       /* Variables accessibles côté client */
@@ -64,9 +66,7 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
       ],
-      link: [
-        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      ],
+      link: [{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
     },
   },
 

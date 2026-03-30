@@ -15,7 +15,10 @@
     />
 
     <!-- Loader -->
-    <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
+    <div
+      v-if="pending"
+      class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center"
+    >
       <LcLoader variant="primary" size="lg" />
     </div>
 
@@ -40,7 +43,9 @@
             <LcPill :variant="COLOR_ENUM.SUCCESS" size="small">Actif</LcPill>
           </div>
           <h3 class="text--h3 text--primary m--none">{{ domain.label }}</h3>
-          <p class="text--body text--neutral-600 m--none">{{ domain.description }}</p>
+          <p class="text--body text--neutral-600 m--none">
+            {{ domain.description }}
+          </p>
         </div>
       </LcCardContainer>
 
@@ -58,7 +63,9 @@
             <LcIcon name="settings" size="title" color="primary" />
           </div>
           <h3 class="text--h3 text--primary m--none">Administration</h3>
-          <p class="text--body text--neutral-600 m--none">Gestion des utilisateurs, domaines et logs</p>
+          <p class="text--body text--neutral-600 m--none">
+            Gestion des utilisateurs, domaines et logs
+          </p>
         </div>
       </LcCardContainer>
     </div>
@@ -83,52 +90,44 @@ import {
   LcTitleSection,
   COLOR_ENUM,
   titleEnum,
-} from '@projetlucie/lc-front-components'
-import type { DomainRecord } from '~/types/auth'
+} from "@projetlucie/lc-front-components";
+import type { DomainRecord } from "~/types/auth";
 
-definePageMeta({ layout: 'domaines' })
+definePageMeta({ layout: "domaines" });
 
-const { isAdmin, userDomains } = useAuth()
-const { setDomain } = useDomain()
+const { isAdmin, userDomains } = useAuth();
+const { setDomain } = useDomain();
 
-// Récupérer les domaines actifs depuis l'API
-const { data: domainsData, pending } = await useFetch<{ data: DomainRecord[] }>(
-  '/api/admin/domains',
-)
-
-// Filtrer les domaines accessibles à l'utilisateur
-const accessibleDomains = computed(() => {
-  const allDomains = domainsData.value?.data ?? []
-  if (isAdmin.value) return allDomains.filter((d) => d.is_active)
-  return allDomains.filter(
-    (d) => d.is_active && userDomains.value.includes(d.code),
-  )
-})
-
-// Redirect automatique si un seul domaine accessible (et pas admin)
-watch(
-  accessibleDomains,
-  (domains) => {
-    if (domains.length === 1 && domains[0].route && !isAdmin.value) {
-      setDomain(domains[0].code)
-      navigateTo(domains[0].route)
-    }
+// Liste statique des domaines
+const staticDomains = [
+  {
+    code: "SOTREL",
+    label: "SOTREL",
+    description: "Accès au domaine SOTREL",
+    is_active: true,
+    route: "/sotrel",
+    icon: "folder",
   },
-  { immediate: true },
-)
+];
+
+const accessibleDomains = computed(() => staticDomains);
+
+const pending = false;
+
+// Suppression de la redirection automatique : l'utilisateur choisit toujours le domaine
 
 /** Clic sur une tuile de domaine → persist + navigate */
 const handleDomainClick = (domain: DomainRecord) => {
   if (domain.route) {
-    setDomain(domain.code)
-    navigateTo(domain.route)
+    setDomain(domain.code);
+    navigateTo(domain.route);
   }
-}
+};
 
 /** Clic sur la tuile Administration */
 const handleAdminClick = () => {
-  navigateTo('/admin')
-}
+  navigateTo("/admin");
+};
 </script>
 
 <style scoped>

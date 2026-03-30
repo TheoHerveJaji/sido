@@ -13,5 +13,37 @@
     "sido",
     "sotrel",
     "SOTREL"
+  ],
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "SLRE7BDD160",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "CXSRE701",
+      "database": "CXSRE701",
+      "username": "CXSRE701",
+      "password": "NviS2W6iGx8#bZu3"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "mysql-lab-sdo-flex-ee73e.mysql.database.azure.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "SIDO - LAB",
+      "database": "sdolab01",
+      "username": "sdolab01_app",
+      "password": "a#dr5h9a4k9i1q5z8r9ksf231sdf54#z"
+    }
   ]
 }
