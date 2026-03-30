@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     params.push(`%${nom}%`)
   }
   if (nodoss) {
-    conditions.push('IDF_NODOSS LIKE ?')
+    conditions.push('IDF_NODOSSIER LIKE ?')
     params.push(`%${nodoss}%`)
   }
 

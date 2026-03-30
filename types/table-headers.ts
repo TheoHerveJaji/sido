@@ -7,7 +7,7 @@ import type { TableHeader } from '@projetlucie/lc-front-components'
 // ── SOTREL : Recherche ──
 export const RECHERCHE_HEADERS: TableHeader[] = [
   { text: 'N° SS',           value: 'IDF_NOSS',       sortable: true,  hasSlot: true },
-  { text: 'N° Dossier',      value: 'IDF_NODOSS',     sortable: true },
+  { text: 'N° Dossier',      value: 'IDF_NODOSSIER',  sortable: true },
   { text: 'Type dossier',    value: 'TYPE_DOSSIER',   sortable: true },
   { text: 'Nom',             value: 'NOM',            sortable: true },
   { text: 'Prénom',          value: 'PRENOM',         sortable: true },

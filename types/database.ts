@@ -6,7 +6,7 @@
 /** SDO_SOT_01_RECHERCHE — Résultat de recherche assuré */
 export interface SotrelRecherche {
   IDF_NOSS: string
-  IDF_NODOSS: string
+  IDF_NODOSSIER: string
   TYPE_DOSSIER: string | null
   NOM: string
   PRENOM: string | null
