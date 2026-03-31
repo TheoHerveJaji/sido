@@ -35,10 +35,6 @@
           v-if="activeTab.id === 5"
           :nodossier="nodossier"
         />
-        <SotrelTabDesignation
-          v-if="activeTab.id === 6"
-          :nodossier="nodossier"
-        />
       </div>
     </div>
   </div>
@@ -94,7 +90,6 @@ const tabs: TabItem[] = [
     iconName: "credit-card",
   },
   { id: 5, label: "Bénéficiaires", isDisabled: false, iconName: "users" },
-  { id: 6, label: "Désignation", isDisabled: false, iconName: "file-text" },
 ];
 const activeTab = ref<TabItem>(tabs[0]);
 </script>
