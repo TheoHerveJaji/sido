@@ -5,7 +5,9 @@
       <LcCardContainer :border="true" padding="regular">
         <div class="flex flex--column gap--medium">
           <div class="flex flex--column gap--micro">
-            <label class="text--caption-semibold text--neutral-800">N° Sécurité Sociale</label>
+            <label class="text--caption-semibold text--neutral-800"
+              >N° Sécurité Sociale</label
+            >
             <LcInput
               v-model="noss"
               placeholder="Ex : 1 85 01 75 XXX"
@@ -21,7 +23,9 @@
             />
           </div>
           <div class="flex flex--column gap--micro">
-            <label class="text--caption-semibold text--neutral-800">N° Dossier</label>
+            <label class="text--caption-semibold text--neutral-800"
+              >N° Dossier</label
+            >
             <LcInput
               v-model="nodoss"
               placeholder="Ex : 12345678"
@@ -69,17 +73,19 @@
     <!-- ── Colonne droite : résultats ── -->
     <div class="flex--1">
       <LcCardContainer :border="true" padding="regular">
-        <template #header>
-          <span class="text--subheader-semibold text--neutral-800">Résultats de recherche</span>
-        </template>
-
         <!-- Loader -->
-        <div v-if="pending && hasSearched" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
+        <div
+          v-if="pending && hasSearched"
+          class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center"
+        >
           <LcLoader variant="primary" size="lg" />
         </div>
 
         <!-- État initial (pas encore de recherche) -->
-        <div v-else-if="!hasSearched" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
+        <div
+          v-else-if="!hasSearched"
+          class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center"
+        >
           <LcIcon name="search" size="display" color="neutral-400" />
           <p>Aucun résultat disponible...</p>
         </div>
@@ -217,7 +223,7 @@ const handleSearch = () => {
 const handleReset = () => reset();
 
 const handleRowClick = (row: SotrelRecherche) => {
-  if (row.TYPE_DOSSIER === 'DB') {
+  if (row.TYPE_DOSSIER === "DB") {
     navigateTo(`/sotrel/designation/${row.IDF_NODOSSIER}`);
   } else {
     navigateTo(`/sotrel/${row.IDF_NODOSSIER}`);
