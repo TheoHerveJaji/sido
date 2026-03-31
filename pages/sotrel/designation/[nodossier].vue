@@ -17,92 +17,71 @@
       />
     </div>
 
-    <!-- Zone principale : renseignements complets -->
-    <div v-if="firstRecord" class="fiche-layout__right flex--1 flex flex--column gap--regular">
-      <!-- ── Assuré ── -->
+    <!-- Zone principale : désignation de bénéficiaire -->
+    <div v-if="firstRecord" class="fiche-layout__right flex--1">
       <LcCardContainer :border="true" padding="regular">
         <template #header>
-          <span class="text--subheader-semibold text--neutral-800">Assuré</span>
+          <span class="text--subheader-semibold text--neutral-800">Désignation de bénéficiaire</span>
         </template>
 
-        <div class="grid grid--2-col grid--fluid gap--regular">
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Nom</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.NOM || '–' }}</span>
+        <div class="flex flex--column gap--regular">
+          <!-- Contexte de la déclaration -->
+          <div class="grid grid--2-col grid--fluid gap--regular">
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">Date de déclaration</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.DATE_DECLARATION ? formatDate(firstRecord.DATE_DECLARATION) : '–' }}</span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">NIR</span>
+              <span class="text--body text--neutral-900">{{ formatNIR(firstRecord.IDF_NOSS) }}</span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">N° Participant</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.NUM_PART || '–' }}</span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">N° Firme</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.NUM_FIRME || '–' }}</span>
+            </div>
           </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Prénom</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.PRENOM || '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">NIR</span>
-            <span class="text--body text--neutral-900">{{ formatNIR(firstRecord.IDF_NOSS) }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">N° Participant</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.NUM_PART || '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">N° Firme</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.NUM_FIRME || '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Date de déclaration</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.DATE_DECLARATION ? formatDate(firstRecord.DATE_DECLARATION) : '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Adresse</span>
-            <span class="text--body text--neutral-900">
-              {{
-                [firstRecord.ADRESSE1, firstRecord.ADRESSE2, firstRecord.ADRESSE3]
-                  .filter(Boolean)
-                  .join(', ') || '–'
-              }}
-              <br v-if="firstRecord.CODE_POSTAL || firstRecord.VILLE" />
-              {{ [firstRecord.CODE_POSTAL, firstRecord.VILLE].filter(Boolean).join(' ') }}
-            </span>
-          </div>
-        </div>
-      </LcCardContainer>
 
-      <!-- ── Bénéficiaire désigné ── -->
-      <LcCardContainer :border="true" padding="regular">
-        <template #header>
-          <span class="text--subheader-semibold text--neutral-800">Bénéficiaire désigné</span>
-        </template>
+          <hr class="separator" />
 
-        <div class="grid grid--2-col grid--fluid gap--regular">
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Code bénéficiaire</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.CODE_BENEF || '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Nom & prénom</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.NOM_BENEF || '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Adresse</span>
-            <span class="text--body text--neutral-900">
-              {{
-                [firstRecord.ADRESSE1_BENEF, firstRecord.ADRESSE2_BENEF, firstRecord.ADRESSE3_BENEF]
-                  .filter(Boolean)
-                  .join(', ') || '–'
-              }}
-              <br v-if="firstRecord.CODE_POSTAL_BENEF || firstRecord.VILLE_BENEF" />
-              {{ [firstRecord.CODE_POSTAL_BENEF, firstRecord.VILLE_BENEF].filter(Boolean).join(' ') }}
-            </span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Montant</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.MONTANT != null ? formatCurrency(firstRecord.MONTANT) : '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Date de début</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.DATEDEB ? formatDate(firstRecord.DATEDEB) : '–' }}</span>
-          </div>
-          <div class="flex flex--column gap--micro">
-            <span class="text--caption-semibold text--neutral-600">Date de fin</span>
-            <span class="text--body text--neutral-900">{{ firstRecord.DATEFIN ? formatDate(firstRecord.DATEFIN) : '–' }}</span>
+          <!-- Bénéficiaire -->
+          <p class="text--subheader-semibold text--neutral-800">Bénéficiaire</p>
+          <div class="grid grid--2-col grid--fluid gap--regular">
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">Code bénéficiaire</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.CODE_BENEF || '–' }}</span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">Nom & prénom</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.NOM_BENEF || '–' }}</span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">Adresse</span>
+              <span class="text--body text--neutral-900">
+                {{
+                  [firstRecord.ADRESSE1_BENEF, firstRecord.ADRESSE2_BENEF, firstRecord.ADRESSE3_BENEF]
+                    .filter(Boolean)
+                    .join(', ') || '–'
+                }}
+                <br v-if="firstRecord.CODE_POSTAL_BENEF || firstRecord.VILLE_BENEF" />
+                {{ [firstRecord.CODE_POSTAL_BENEF, firstRecord.VILLE_BENEF].filter(Boolean).join(' ') }}
+              </span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">Montant</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.MONTANT != null ? formatCurrency(firstRecord.MONTANT) : '–' }}</span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">Date de début</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.DATEDEB ? formatDate(firstRecord.DATEDEB) : '–' }}</span>
+            </div>
+            <div class="flex flex--column gap--micro">
+              <span class="text--caption-semibold text--neutral-600">Date de fin</span>
+              <span class="text--body text--neutral-900">{{ firstRecord.DATEFIN ? formatDate(firstRecord.DATEFIN) : '–' }}</span>
+            </div>
           </div>
         </div>
       </LcCardContainer>
