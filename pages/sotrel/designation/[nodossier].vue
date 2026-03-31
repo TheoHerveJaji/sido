@@ -17,13 +17,58 @@
       />
     </div>
 
-    <!-- Zone principale : renseignements du bénéficiaire -->
-    <div class="fiche-layout__right flex--1">
-      <LcCardContainer v-if="firstRecord" :border="true" padding="regular">
+    <!-- Zone principale : renseignements complets -->
+    <div v-if="firstRecord" class="fiche-layout__right flex--1 flex flex--column gap--regular">
+      <!-- ── Assuré ── -->
+      <LcCardContainer :border="true" padding="regular">
         <template #header>
-          <span class="text--subheader-semibold text--neutral-800">
-            Bénéficiaire désigné
-          </span>
+          <span class="text--subheader-semibold text--neutral-800">Assuré</span>
+        </template>
+
+        <div class="grid grid--2-col grid--fluid gap--regular">
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Nom</span>
+            <span class="text--body text--neutral-900">{{ firstRecord.NOM || '–' }}</span>
+          </div>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Prénom</span>
+            <span class="text--body text--neutral-900">{{ firstRecord.PRENOM || '–' }}</span>
+          </div>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">NIR</span>
+            <span class="text--body text--neutral-900">{{ formatNIR(firstRecord.IDF_NOSS) }}</span>
+          </div>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">N° Participant</span>
+            <span class="text--body text--neutral-900">{{ firstRecord.NUM_PART || '–' }}</span>
+          </div>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">N° Firme</span>
+            <span class="text--body text--neutral-900">{{ firstRecord.NUM_FIRME || '–' }}</span>
+          </div>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Date de déclaration</span>
+            <span class="text--body text--neutral-900">{{ firstRecord.DATE_DECLARATION ? formatDate(firstRecord.DATE_DECLARATION) : '–' }}</span>
+          </div>
+          <div class="flex flex--column gap--micro">
+            <span class="text--caption-semibold text--neutral-600">Adresse</span>
+            <span class="text--body text--neutral-900">
+              {{
+                [firstRecord.ADRESSE1, firstRecord.ADRESSE2, firstRecord.ADRESSE3]
+                  .filter(Boolean)
+                  .join(', ') || '–'
+              }}
+              <br v-if="firstRecord.CODE_POSTAL || firstRecord.VILLE" />
+              {{ [firstRecord.CODE_POSTAL, firstRecord.VILLE].filter(Boolean).join(' ') }}
+            </span>
+          </div>
+        </div>
+      </LcCardContainer>
+
+      <!-- ── Bénéficiaire désigné ── -->
+      <LcCardContainer :border="true" padding="regular">
+        <template #header>
+          <span class="text--subheader-semibold text--neutral-800">Bénéficiaire désigné</span>
         </template>
 
         <div class="grid grid--2-col grid--fluid gap--regular">
@@ -61,8 +106,11 @@
           </div>
         </div>
       </LcCardContainer>
+    </div>
 
-      <LcCardContainer v-else :border="true" padding="regular">
+    <!-- État vide -->
+    <div v-else class="fiche-layout__right flex--1">
+      <LcCardContainer :border="true" padding="regular">
         <div class="flex flex--column flex--align-center gap--medium py--jumbo text--neutral-600 text--center">
           <LcIcon name="user-x" size="display" color="neutral-400" />
           <p>Aucune désignation pour ce dossier</p>
@@ -75,12 +123,12 @@
 <script setup lang="ts">
 /* ══════════════════════════════════════════════════════════════
    Page désignation de bénéficiaire (TYPE_DOSSIER = DB)
-   Layout 2 colonnes : sidebar participant + fiche bénéficiaire
+   Layout 2 colonnes : sidebar participant + fiche complète
    ══════════════════════════════════════════════════════════════ */
 
 import { LcLoader, LcCardContainer, LcIcon } from "@projetlucie/lc-front-components";
 import type { SotrelDesignation } from "~/types/database";
-import { formatDate, formatCurrency } from "~/utils/formatters";
+import { formatDate, formatCurrency, formatNIR } from "~/utils/formatters";
 
 definePageMeta({ layout: "domain" });
 
