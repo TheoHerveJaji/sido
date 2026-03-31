@@ -9,9 +9,9 @@
             <LcIcon name="folder" size="caption" color="neutral-600" /> N°
             Dossier
           </span>
-          <span class="text--body text--neutral-900">{{
-            designation.IDF_NODOSSIER
-          }}</span>
+          <span class="text--body text--neutral-900">
+            {{ designation.IDF_NODOSSIER }}
+          </span>
         </div>
 
         <div class="flex flex--column gap--micro">
@@ -29,21 +29,42 @@
   <!-- ── Bloc déclaration ── -->
   <LcCardContainer :border="true" padding="regular">
     <div class="flex flex--column gap--small">
-      <span class="text--subheader-semibold text--neutral-800">Déclaration</span>
+      <span class="text--subheader-semibold text--neutral-800">
+        Déclaration
+      </span>
 
-      <div v-if="designation.DATE_DECLARATION" class="flex flex--column gap--micro">
-        <span class="text--caption-semibold text--neutral-600">Date de déclaration</span>
-        <span class="text--body text--neutral-900">{{ formatDate(designation.DATE_DECLARATION) }}</span>
+      <div
+        v-if="designation.DATE_DECLARATION"
+        class="flex flex--column gap--micro"
+      >
+        <span class="text--caption-semibold text--neutral-600">
+          Date de déclaration
+        </span>
+        <span class="text--body text--neutral-900">
+          {{ formatDate(designation.DATE_DECLARATION) }}
+        </span>
       </div>
 
       <div class="flex flex--row gap--regular">
-        <div v-if="designation.NUM_PART" class="flex flex--column gap--micro">
-          <span class="text--caption-semibold text--neutral-600">N° Participant</span>
-          <span class="text--body text--neutral-900">{{ designation.NUM_PART }}</span>
+        <div
+          v-if="designation.NUM_PART || designation.NUM_PART !== ''"
+          class="flex flex--column gap--micro"
+        >
+          <span class="text--caption-semibold text--neutral-600">
+            N° Participant
+          </span>
+          <span class="text--body text--neutral-900">
+            {{ designation.NUM_PART }}
+          </span>
         </div>
-        <div v-if="designation.NUM_FIRME" class="flex flex--column gap--micro">
+        <div
+          v-if="designation.NUM_FIRME || designation.NUM_FIRME !== ''"
+          class="flex flex--column gap--micro"
+        >
           <span class="text--caption-semibold text--neutral-600">N° Firme</span>
-          <span class="text--body text--neutral-900">{{ designation.NUM_FIRME }}</span>
+          <span class="text--body text--neutral-900">
+            {{ designation.NUM_FIRME }}
+          </span>
         </div>
       </div>
     </div>
@@ -67,7 +88,11 @@
           }}
         </span>
         <span class="text--body text--neutral-900">
-          {{ [designation.CODE_POSTAL, designation.VILLE].filter(Boolean).join(" ") }}
+          {{
+            [designation.CODE_POSTAL, designation.VILLE]
+              .filter(Boolean)
+              .join(" ")
+          }}
         </span>
       </div>
     </div>

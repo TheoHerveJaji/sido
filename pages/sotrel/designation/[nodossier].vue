@@ -1,6 +1,9 @@
 <template>
   <!-- Loader pendant le chargement initial -->
-  <div v-if="pending" class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center">
+  <div
+    v-if="pending"
+    class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center"
+  >
     <LcLoader variant="primary" size="lg" />
   </div>
 
@@ -8,15 +11,15 @@
   <div v-else class="flex gap--regular flex--align-start">
     <!-- Colonne gauche : signalétique du participant (sticky) -->
     <div class="fiche-layout__left flex flex--column gap--regular">
-      <SotrelDesignationFicheLeft v-if="firstRecord" :designation="firstRecord" />
+      <SotrelDesignationFicheLeft
+        v-if="firstRecord"
+        :designation="firstRecord"
+      />
     </div>
 
     <!-- Zone principale : tableau des désignations -->
     <div class="fiche-layout__right flex--1">
       <LcCardContainer :border="true" padding="regular">
-        <template #header>
-          <span class="text--subheader-semibold text--neutral-800">Désignation de bénéficiaire</span>
-        </template>
         <SotrelTabDesignation :nodossier="nodossier" />
       </LcCardContainer>
     </div>
