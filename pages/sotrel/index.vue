@@ -153,25 +153,23 @@ import { formatDate } from "~/utils/formatters";
 
 definePageMeta({ layout: "domain" });
 
-// ── État des champs de recherche ──
-const noss = ref("");
-const nom = ref("");
-const nodoss = ref("");
+// ── État persistant de la recherche (survit aux navigations SPA) ──
+const {
+  noss,
+  nom,
+  nodoss,
+  appliedNoss,
+  appliedNom,
+  appliedNodoss,
+  currentPage,
+  rowsPerPage,
+  sortBy,
+  sortType,
+  hasSearched,
+  reset,
+} = useSotrelSearch();
 
-// ── Critères appliqués (après clic sur Rechercher) ──
-const appliedNoss = ref("");
-const appliedNom = ref("");
-const appliedNodoss = ref("");
-
-// ── Pagination et tri ──
-const currentPage = ref(1);
-const rowsPerPage = ref(25);
-const sortBy = ref<string[]>(["NOM"]);
-const sortType = ref<string[]>(["asc"]);
 const selectedArray = ref<SotrelRecherche[]>([]);
-
-// ── Indicateur de recherche lancée ──
-const hasSearched = ref(false);
 
 // Au moins un critère doit être renseigné
 const canSearch = computed(
@@ -216,16 +214,7 @@ const handleSearch = () => {
   refresh();
 };
 
-const handleReset = () => {
-  noss.value = "";
-  nom.value = "";
-  nodoss.value = "";
-  appliedNoss.value = "";
-  appliedNom.value = "";
-  appliedNodoss.value = "";
-  hasSearched.value = false;
-  currentPage.value = 1;
-};
+const handleReset = () => reset();
 
 const handleRowClick = (row: SotrelRecherche) => {
   if (row.TYPE_DOSSIER === 'DB') {
@@ -234,6 +223,11 @@ const handleRowClick = (row: SotrelRecherche) => {
     navigateTo(`/sotrel/${row.IDF_NODOSSIER}`);
   }
 };
+
+// ── Relancer la recherche si on revient depuis un dossier ──
+onMounted(() => {
+  if (hasSearched.value) refresh();
+});
 
 // Critères actifs pour les pills
 const activeFilters = computed(() => {
