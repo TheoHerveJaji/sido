@@ -228,7 +228,11 @@ const handleReset = () => {
 };
 
 const handleRowClick = (row: SotrelRecherche) => {
-  navigateTo(`/sotrel/${row.IDF_NODOSSIER}`);
+  if (row.TYPE_DOSSIER === 'DB') {
+    navigateTo(`/sotrel/designation/${row.IDF_NODOSSIER}`);
+  } else {
+    navigateTo(`/sotrel/${row.IDF_NODOSSIER}`);
+  }
 };
 
 // Critères actifs pour les pills
