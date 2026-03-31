@@ -8,6 +8,7 @@
 import { LcTable, LcLoader } from '@projetlucie/lc-front-components'
 import { BENEF_LISTE_HEADERS } from '~/types/table-headers'
 import type { SotrelListeBenef, SotrelBenefDetail } from '~/types/database'
+import { formatDate } from '~/utils/formatters'
 
 const props = defineProps<{ nodossier: string }>()
 
@@ -59,7 +60,11 @@ const handleBenefClick = async (row: SotrelListeBenef) => {
       :is-line-clickable="true"
       no-result-message="Aucun bénéficiaire pour ce dossier"
       @line-clicked="handleBenefClick"
-    />
+    >
+      <template #DATE_ETAT="{ item }">
+        {{ item.DATE_ETAT ? formatDate(item.DATE_ETAT) : '–' }}
+      </template>
+    </LcTable>
 
     <!-- Modale détail bénéficiaire -->
     <BeneficiaireDetailModal

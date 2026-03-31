@@ -35,6 +35,8 @@ export const BENEF_LISTE_HEADERS: TableHeader[] = [
   { text: 'N° Bénéficiaire', value: 'IDF_NOBENEF',  sortable: true },
   { text: 'Titre',           value: 'TITRE_BENEF',   sortable: true },
   { text: 'Nom',             value: 'NOM_BENEF',     sortable: true },
+  { text: 'Code état',       value: 'CODE_ETAT',     sortable: true },
+  { text: 'Date état',       value: 'DATE_ETAT',     sortable: true, hasSlot: true },
 ]
 
 // ── SOTREL : Désignation ──
