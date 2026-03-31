@@ -17,6 +17,14 @@ const LABELS: Record<string, string> = {
   logs: "Logs",
 };
 
+/**
+ * Segments "section" qui doivent être fusionnés avec le segment dynamique suivant.
+ * Ex: /sotrel/designation/12345 → "Dossier désignation 12345" (une seule étape)
+ */
+const SECTION_LABELS: Record<string, string> = {
+  designation: "Dossier désignation",
+};
+
 interface BreadcrumbItem {
   label: string;
   path: string;
@@ -30,9 +38,30 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
   const items: BreadcrumbItem[] = [];
 
   let currentPath = "";
+  let skipNext = false;
   segments.forEach((segment, index) => {
     currentPath += `/${segment}`;
     const isLast = index === segments.length - 1;
+
+    // Ce segment a été absorbé par le précédent (section + dynamique)
+    if (skipNext) {
+      skipNext = false;
+      return;
+    }
+
+    // Segment "section" suivi d'un segment dynamique : fusionner les deux
+    if (SECTION_LABELS[segment] && !isLast) {
+      const nextSegment = segments[index + 1];
+      const nextPath = `${currentPath}/${nextSegment}`;
+      const isNextLast = index + 1 === segments.length - 1;
+      items.push({
+        label: `${SECTION_LABELS[segment]} ${nextSegment}`,
+        path: nextPath,
+        isLast: isNextLast,
+      });
+      skipNext = true;
+      return;
+    }
 
     let label = LABELS[segment];
     if (!label) {
