@@ -2,7 +2,7 @@
   <LcModal
     id="benef-detail-modal"
     v-model="showModal"
-    width="700px"
+    width="900px"
     height="auto"
     :close-on-backdrop="true"
   >
@@ -11,7 +11,7 @@
       <LcLoader variant="primary" size="md" />
     </div>
 
-    <div v-else-if="benef" class="flex flex--column gap--medium">
+    <div v-else-if="benef" class="modal-content flex flex--column gap--medium">
       <LcTitleSection :type="titleEnum.H3">
         {{ benef.TITRE_BENF }} {{ benef.NOM_BENEF }}
       </LcTitleSection>
@@ -38,7 +38,7 @@
       <!-- ── Capital payé ── -->
       <div class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
         <span class="text--subheader-semibold text--neutral-800">Capital payé</span>
-        <div class="grid grid--2-col grid--fluid gap--regular">
+        <div class="grid grid--3-col grid--fluid gap--regular">
           <div class="flex flex--column gap--micro">
             <span class="text--caption-semibold text--neutral-600">Montant capital</span>
             <span class="text--body text--neutral-900">{{ formatCurrency(benef.CAPITAL_BENEF) }}</span>
@@ -65,7 +65,7 @@
       <!-- ── Coordonnées bancaires ── -->
       <div class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
         <span class="text--subheader-semibold text--neutral-800">Coordonnées bancaires</span>
-        <div class="grid grid--2-col grid--fluid gap--regular">
+        <div class="grid grid--3-col grid--fluid gap--regular">
           <div class="flex flex--column gap--micro">
             <span class="text--caption-semibold text--neutral-600">Domiciliation</span>
             <span class="text--body text--neutral-900">{{ benef.DOMICILIATION_BENEF || '–' }}</span>
@@ -92,7 +92,7 @@
       <!-- ── Complément (conditionnel) ── -->
       <div v-if="benef.COMPLEMENT_BENEF" class="flex flex--column gap--medium p--regular bg--neutral-100 radius">
         <span class="text--subheader-semibold text--neutral-800">Complément</span>
-        <div class="grid grid--2-col grid--fluid gap--regular">
+        <div class="grid grid--3-col grid--fluid gap--regular">
           <div class="flex flex--column gap--micro">
             <span class="text--caption-semibold text--neutral-600">Montant complément</span>
             <span class="text--body text--neutral-900">{{ formatCurrency(benef.COMPLEMENT_BENEF) }}</span>
@@ -168,6 +168,12 @@ const charges = computed(() => {
 </script>
 
 <style scoped>
+.modal-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
 .charges-list {
   list-style: none;
   padding: 0;
