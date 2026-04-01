@@ -32,9 +32,9 @@
         <LcCardContainer :border="true" padding="regular" class="mt--small">
           <div class="grid grid--2-col grid--fluid gap--regular">
             <div class="flex flex--column gap--micro">
-              <span class="text--caption-semibold text--neutral-600"
-                >Code bénéficiaire</span
-              >
+              <span class="text--caption-semibold text--neutral-600">
+                Code bénéficiaire
+              </span>
               <span class="text--body text--neutral-900">
                 {{ firstRecord.CODE_BENEF || "–" }}
               </span>
