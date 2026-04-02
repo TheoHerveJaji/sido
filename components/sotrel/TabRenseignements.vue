@@ -116,35 +116,6 @@ const etatsHistorique = computed(() => {
       </div>
     </LcCardContainer>
 
-    <!-- ── Employeur de l'assuré (conditionnel) ── -->
-    <LcCardContainer v-if="rg.RAISON_SOCIALE" :border="true" padding="regular">
-      <p class="text--header bold text--neutral-800 mb--large">
-        Employeur de l'assuré
-      </p>
-      <div class="grid grid--2-col grid--fluid gap--regular">
-        <div class="flex flex--column gap--micro">
-          <span class="text--caption-semibold text--neutral-600">N° Firme</span>
-          <span class="text--body text--neutral-900">{{ rg.NUMERO_FIRME || "–" }}</span>
-        </div>
-        <div class="flex flex--column gap--micro">
-          <span class="text--caption-semibold text--neutral-600">Raison sociale</span>
-          <span class="text--body text--neutral-900">{{ rg.RAISON_SOCIALE }}</span>
-        </div>
-        <div class="flex flex--column gap--micro">
-          <span class="text--caption-semibold text--neutral-600">Adresse</span>
-          <span class="text--body text--neutral-900">
-            {{ [rg.ADRESSE1_EMPLOYEUR, rg.ADRESSE2_EMPLOYEUR, rg.ADRESSE3_EMPLOYEUR].filter(Boolean).join(", ") || "–" }}
-          </span>
-        </div>
-        <div class="flex flex--column gap--micro">
-          <span class="text--caption-semibold text--neutral-600">Code Postal / Ville</span>
-          <span class="text--body text--neutral-900">
-            {{ [rg.CP_EMPLOYEUR, rg.VILLE_EMPLOYEUR].filter(Boolean).join(" ") || "–" }}
-          </span>
-        </div>
-      </div>
-    </LcCardContainer>
-
     <!-- ── Historique des états ── -->
     <LcCardContainer
       v-if="etatsHistorique.length > 0"
