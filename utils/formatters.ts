@@ -32,8 +32,10 @@ export function formatDate(value: string | null | undefined): string {
 export function formatCurrency(value: number | string | null | undefined): string {
   if (value === null || value === undefined || value === '') return ''
 
-  const num = typeof value === 'string' ? parseFloat(value) : value
-  if (isNaN(num)) return ''
+  const raw = typeof value === 'string' ? parseFloat(value) : value
+  if (isNaN(raw)) return ''
+
+  const num = raw / 100
 
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
