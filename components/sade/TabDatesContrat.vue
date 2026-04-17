@@ -1,31 +1,5 @@
-<script setup lang="ts">
-/* ══════════════════════════════════════════════════
-   Onglet Dates — Historique des dates du contrat
-   Source : SDO_SAD_07_DATES
-   LcTable sans pagination
-   ══════════════════════════════════════════════════ */
-
-import {
-  LcTable,
-  LcIcon,
-  LcPill,
-  LcLoader,
-  LcCardContainer,
-  COLOR_ENUM,
-} from "@projetlucie/lc-front-components";
-import { SADE_DATES_HEADERS } from "~/types/table-headers";
-import type { SadeDatesContrat } from "~/types/database";
-import { formatDate } from "~/utils/formatters";
-
-const props = defineProps<{ numfirme: string; connum: string }>();
-
-const { data, pending } = await useFetch<{ data: SadeDatesContrat[] }>(
-  `/api/sade/${props.numfirme}/contrats/${props.connum}/dates`,
-);
-</script>
-
 <template>
-  <LcCardContainer :border="true" padding="regular">
+  <LcCardContainer :border="true" padding="none">
     <div
       v-if="pending"
       class="flex flex--column flex--align-center gap--medium py--jumbo px--regular text--neutral-600 text--center"
@@ -73,3 +47,29 @@ const { data, pending } = await useFetch<{ data: SadeDatesContrat[] }>(
     </LcTable>
   </LcCardContainer>
 </template>
+
+<script setup lang="ts">
+/* ══════════════════════════════════════════════════
+   Onglet Dates — Historique des dates du contrat
+   Source : SDO_SAD_07_DATES
+   LcTable sans pagination
+   ══════════════════════════════════════════════════ */
+
+import {
+  LcTable,
+  LcIcon,
+  LcPill,
+  LcLoader,
+  LcCardContainer,
+  COLOR_ENUM,
+} from "@projetlucie/lc-front-components";
+import { SADE_DATES_HEADERS } from "~/types/table-headers";
+import type { SadeDatesContrat } from "~/types/database";
+import { formatDate } from "~/utils/formatters";
+
+const props = defineProps<{ numfirme: string; connum: string }>();
+
+const { data, pending } = await useFetch<{ data: SadeDatesContrat[] }>(
+  `/api/sade/${props.numfirme}/contrats/${props.connum}/dates`,
+);
+</script>
