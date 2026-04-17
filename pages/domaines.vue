@@ -108,6 +108,14 @@ const staticDomains = [
     route: "/sotrel",
     icon: "folder",
   },
+  {
+    code: "SADE",
+    label: "SADE",
+    description: "Suivi Administratif des Entreprises",
+    is_active: true,
+    route: "/sade",
+    icon: "building",
+  },
 ];
 
 const accessibleDomains = computed(() => staticDomains);
