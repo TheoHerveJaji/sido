@@ -203,3 +203,181 @@ export interface SotrelDesignation {
   DATEDEB: string | null
   DATEFIN: string | null
 }
+
+/* ══════════════════════════════════════════════════
+   Interfaces SADE — Suivi Administratif des Entreprises
+   Tables en lecture seule — aucun INSERT/UPDATE/DELETE
+   Schéma aligné sur Spécifications V2 (13/04/2026)
+   ══════════════════════════════════════════════════ */
+
+/** SDO_SAD_01_RECHERCHE — Résultat de recherche entreprise */
+export interface SadeRecherche {
+  IDF_KNUMADH: string
+  TYPE_ENTITE: string | null
+  DENSOC: string | null
+  SIREN: string | null
+  CPOSTAL: string | null
+}
+
+/** SDO_SAD_02_RENSEIGNEMENTS — Renseignements généraux entreprise */
+export interface SadeRenseignements {
+  IDF_KNUMADH: string
+  // Identité
+  DENSOC: string | null
+  DENSOC1: string | null
+  DENSOC_COURTE: string | null
+  SIGLE: string | null
+  ENSEIGNE: string | null
+  // Adresse
+  ADRESSE1: string | null
+  ADRESSE2: string | null
+  ADRESSE3: string | null
+  ADRESSE4: string | null
+  CDPOST: string | null
+  VILLE: string | null
+  CODE_PAYS: string | null
+  BOITE_POSTALE: string | null
+  CDPOST_CEDEX: string | null
+  VILLE_CEDEX: string | null
+  // Contact
+  EMAIL: string | null
+  TELEPHONE: string | null
+  FAX: string | null
+  PORTABLE: string | null
+  // Dates & juridique
+  DATE_OUV: string | null
+  DATE_1_CRE: string | null
+  DATE_CRE: string | null
+  ADH_ORG: string | null
+  DATE_CESS: string | null
+  DATE_MAJ_CESS: string | null
+  MOTIF_CESS: string | null
+  TYPE_SOC: string | null
+  FORME_JUR: string | null
+  CODE_JUR: string | null
+  SIRET: string | null
+  NPAI: string | null
+  TYPE_ENTITE: string | null
+  SITUATION: string | null
+  CODE_ETAT: string | null
+  DEPT: string | null
+  SECT_ACT: string | null
+  VFIL: string | null
+  TRANS_URBAIN: string | null
+  CHAMBRE_METIER: string | null
+  TRANS_MULTIPLES: string | null
+  CODE_NACE: string | null
+  VIP: string | null
+  REFER_SIEGE: string | null
+  DATE_ATTRIBUTION: string | null
+  NUM_GESTION: string | null
+  VILLE_ACTUELLE: string | null
+  EFFECTIF: string | null
+  DATE_EFF_MAJ: string | null
+  DATE_ENREGISTREMENT: string | null
+  VILLE_ORIGINE: string | null
+  NUMERO_URSSAF: string | null
+  ATTES_CAPACITE: string | null
+  NOEMIE: string | null
+  // Divers
+  CONCOL: string | null
+  SYNDICAT: string | null
+  CAISSE_CP: string | null
+  CAISSE_TA: string | null
+  IDENTIFIANT_TA: string | null
+  CAISSE_TB: string | null
+  IDENTIFIANT_TB: string | null
+  CAISSE_NC: string | null
+  IDENTIFIANT_NC: string | null
+  CAISSE_PR: string | null
+  IDENTIFIANT_PR: string | null
+}
+
+/** SDO_SAD_03_LIBSER — Libre-service */
+export interface SadeLibreService {
+  IDF_NUMFIRME: string
+  DENSOC: string | null
+  TYPENT: string | null
+  SITENT: string | null
+  NUMORD: string | null
+  DATEMAJ: string | null
+  LIBSER: string | null
+}
+
+/** SDO_SAD_04_PRED_SUCC — Prédécesseurs et Successeurs */
+export interface SadePredSuc {
+  IDF_NUMFIRME: string
+  DENSOC: string | null
+  TYPENT: string | null
+  SITENT: string | null
+  IDF_NUMFIRME_PS: string | null
+  DENSOC_PS: string | null
+  TYPE_PS: string | null
+  LFBG: string | null
+  DATE: string | null
+}
+
+/** SDO_SAD_05_GROUPE — Groupes d'appartenance */
+export interface SadeGroupe {
+  IDF_NUMFIRME: string
+  DENSOC: string | null
+  TYPENT: string | null
+  SITENT: string | null
+  IDF_NUMFIRME_GP: string | null
+  DENSOC_GP: string | null
+  TYPE: string | null
+  POURCENTAGE: string | null
+  DATE_DEBUT: string | null
+  DATE_FIN: string | null
+}
+
+/** SDO_SAD_06_LISTE_CONTRATS — Liste des contrats */
+export interface SadeListeContrats {
+  IDF_NUMFIRME: string
+  DENSOC: string | null
+  TYPENT: string | null
+  SITENT: string | null
+  NUM_PRODUIT: string | null
+  LIBELLE: string | null
+  CAT_PROF: string | null
+  DATE_EFFET: string | null
+  DATE_DEBUT: string | null
+  DATE_FIN: string | null
+  MOTIF: string | null
+}
+
+/** SDO_SAD_07_CONTRAT — Renseignements contrat (détail) */
+export interface SadeContrat {
+  IDF_NUMFIRME: string
+  DENSOC: string | null
+  TYPENT: string | null
+  SITENT: string | null
+  NUM_PRODUIT: string | null
+  LIBELLE: string | null
+  CODE: string | null
+  INSTITUTION: string | null
+  CAT_PROF: string | null
+  CAT_CCN: string | null
+  DATE_EFFET: string | null
+  DATE_OUVERT: string | null
+  DATE_SUSP: string | null
+  DATE_PAIE: string | null
+  DATE_RES: string | null
+  EFFECTIF: string | null
+  DATE_EFF_MAJ: string | null
+  ORIGINE: string | null
+  ORG_GESTION: string | null
+  RETROC: string | null
+  PER_COT: string | null
+}
+
+/** SDO_SAD_08_DATES — Dates du contrat */
+export interface SadeDatesContrat {
+  IDF_NUMFIRME: string
+  NUM_PRODUIT: string
+  DATE_DEBUT: string | null
+  DATE_DEBUT_MAJ: string | null
+  DATE_FIN: string | null
+  DATE_FIN_MAJ: string | null
+  MOTIF: string | null
+}

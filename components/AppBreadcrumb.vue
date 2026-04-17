@@ -11,6 +11,7 @@ const route = useRoute();
 /** Mapping des segments de route vers des labels lisibles */
 const LABELS: Record<string, string> = {
   sotrel: "Recherche",
+  sade: "Recherche",
   admin: "Administration",
   users: "Utilisateurs",
   domains: "Domaines",
@@ -23,6 +24,7 @@ const LABELS: Record<string, string> = {
  */
 const SECTION_LABELS: Record<string, string> = {
   designation: "Dossier désignation",
+  contrat: "Contrat",
 };
 
 interface BreadcrumbItem {
@@ -68,6 +70,8 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
       // Segment dynamique (ex: numéro de dossier, id utilisateur)
       if (segments[index - 1] === "sotrel") {
         label = `Dossier ${segment}`;
+      } else if (segments[index - 1] === "sade") {
+        label = `Entreprise ${segment}`;
       } else {
         label = segment;
       }
