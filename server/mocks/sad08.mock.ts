@@ -1,0 +1,117 @@
+/**
+ * SDO_SAD_08_DATES — Historique des dates par contrat (schéma V2)
+ * Clé composite : IDF_NUMFIRME + NUM_PRODUIT
+ * Motifs ER et RC exclus — plusieurs lignes par contrat (avenants successifs)
+ */
+export const MOCK_SAD_08 = [
+  // —— Firme 000000000001 / DP01 ——
+  {
+    IDF_NUMFIRME: '000000000001', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '19820101', DATE_DEBUT_MAJ: '19820101',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+  // —— Firme 000000000001 / IV02 ——
+  {
+    IDF_NUMFIRME: '000000000001', NUM_PRODUIT: 'IV02',
+    DATE_DEBUT: '19950101', DATE_DEBUT_MAJ: '19950101',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+
+  // —— Firme 000000000002 / DP01 — 3 avenants ——
+  {
+    IDF_NUMFIRME: '000000000002', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '19950315', DATE_DEBUT_MAJ: '19950315',
+    DATE_FIN: '20001231',   DATE_FIN_MAJ: '20001201',
+    MOTIF: 'AV',
+  },
+  {
+    IDF_NUMFIRME: '000000000002', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '20010101', DATE_DEBUT_MAJ: '20001201',
+    DATE_FIN: '20191031',   DATE_FIN_MAJ: '20191015',
+    MOTIF: 'AV',
+  },
+  {
+    IDF_NUMFIRME: '000000000002', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '20191101', DATE_DEBUT_MAJ: '20191015',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+
+  // —— Firme 000000000002 / IV02 ——
+  {
+    IDF_NUMFIRME: '000000000002', NUM_PRODUIT: 'IV02',
+    DATE_DEBUT: '19950315', DATE_DEBUT_MAJ: '19950315',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+
+  // —— Firme 000000000002 / DP03 ——
+  {
+    IDF_NUMFIRME: '000000000002', NUM_PRODUIT: 'DP03',
+    DATE_DEBUT: '20050601', DATE_DEBUT_MAJ: '20050515',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+
+  // —— Firme 000000000003 / DP01 — 2 avenants ——
+  {
+    IDF_NUMFIRME: '000000000003', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '20010610', DATE_DEBUT_MAJ: '20010601',
+    DATE_FIN: '20141231',   DATE_FIN_MAJ: '20141201',
+    MOTIF: 'AV',
+  },
+  {
+    IDF_NUMFIRME: '000000000003', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '20150101', DATE_DEBUT_MAJ: '20141201',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+
+  // —— Firme 000000000003 / IV02 (résilié) ——
+  {
+    IDF_NUMFIRME: '000000000003', NUM_PRODUIT: 'IV02',
+    DATE_DEBUT: '20010610', DATE_DEBUT_MAJ: '20010601',
+    DATE_FIN: '20201231',   DATE_FIN_MAJ: '20201201',
+    MOTIF: 'RT',
+  },
+
+  // —— Firme 000000000007 / DP01 (résilié) ——
+  {
+    IDF_NUMFIRME: '000000000007', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '19920301', DATE_DEBUT_MAJ: '19920215',
+    DATE_FIN: '20151231',   DATE_FIN_MAJ: '20151115',
+    MOTIF: 'RT',
+  },
+
+  // —— Firme 000000000011 / DP03 ——
+  {
+    IDF_NUMFIRME: '000000000011', NUM_PRODUIT: 'DP03',
+    DATE_DEBUT: '20080415', DATE_DEBUT_MAJ: '20080401',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+
+  // —— Firme 000000000011 / IV02 — 2 avenants ——
+  {
+    IDF_NUMFIRME: '000000000011', NUM_PRODUIT: 'IV02',
+    DATE_DEBUT: '20120101', DATE_DEBUT_MAJ: '20111215',
+    DATE_FIN: '20191231',   DATE_FIN_MAJ: '20191201',
+    MOTIF: 'AV',
+  },
+  {
+    IDF_NUMFIRME: '000000000011', NUM_PRODUIT: 'IV02',
+    DATE_DEBUT: '20200101', DATE_DEBUT_MAJ: '20191201',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+
+  // —— Firme 000000000012 / DP01 ——
+  {
+    IDF_NUMFIRME: '000000000012', NUM_PRODUIT: 'DP01',
+    DATE_DEBUT: '20050720', DATE_DEBUT_MAJ: '20050701',
+    DATE_FIN: null,         DATE_FIN_MAJ: null,
+    MOTIF: null,
+  },
+]

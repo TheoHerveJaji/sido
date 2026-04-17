@@ -47,6 +47,15 @@ export default defineNuxtConfig({
     dbEnableSsl: process.env.DB_ENABLE_SSL || "false",
     dbRejectUnauthorized: process.env.DB_REJECT_UNAUTHORIZED || "true",
 
+    /* Variables serveur uniquement (DB SADE) */
+    dbSadeHost: process.env.DB_SADE_HOST || "",
+    dbSadePort: process.env.DB_SADE_PORT || "3306",
+    dbSadeUser: process.env.DB_SADE_USER || "",
+    dbSadePassword: process.env.DB_SADE_PASSWORD || "",
+    dbSadeName: process.env.DB_SADE_NAME || "SDO_SARCOPHAGE_SADE",
+    dbSadeEnableSsl: process.env.DB_SADE_ENABLE_SSL || "false",
+    dbSadeRejectUnauthorized: process.env.DB_SADE_REJECT_UNAUTHORIZED || "true",
+
     public: {
       /* Variables accessibles côté client */
       appName: "SIDO – Sarcophage",

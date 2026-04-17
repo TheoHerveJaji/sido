@@ -15,6 +15,15 @@ import { MOCK_USERS } from '../mocks/users.mock'
 import { MOCK_DOMAINS } from '../mocks/domains.mock'
 import { MOCK_USER_DOMAINS } from '../mocks/user-domains.mock'
 import { MOCK_LOGS } from '../mocks/logs.mock'
+// —— SADE ——
+import { MOCK_SAD_01 } from '../mocks/sad01.mock'
+import { MOCK_SAD_02 } from '../mocks/sad02.mock'
+import { MOCK_SAD_03 } from '../mocks/sad03.mock'
+import { MOCK_SAD_04 } from '../mocks/sad04.mock'
+import { MOCK_SAD_05 } from '../mocks/sad05.mock'
+import { MOCK_SAD_06_LISTE_CONTRATS } from '../mocks/sad06lc.mock'
+import { MOCK_SAD_07 } from '../mocks/sad07.mock'
+import { MOCK_SAD_08 } from '../mocks/sad08.mock'
 
 // Registre de toutes les tables mockées
 const MOCK_TABLES: Record<string, any[]> = {
@@ -30,6 +39,15 @@ const MOCK_TABLES: Record<string, any[]> = {
   SDO_DOMAINS:            MOCK_DOMAINS,
   SDO_USER_DOMAINS:       MOCK_USER_DOMAINS,
   SDO_LOGS:               MOCK_LOGS,
+  // —— SADE ——
+  SDO_SAD_01_RECHERCHE:        MOCK_SAD_01,
+  SDO_SAD_02_RENSEIGNEMENTS:   MOCK_SAD_02,
+  SDO_SAD_03_LIBSER:           MOCK_SAD_03,
+  SDO_SAD_04_PRED_SUCC:        MOCK_SAD_04,
+  SDO_SAD_05_GROUPE:           MOCK_SAD_05,
+  SDO_SAD_06_LISTE_CONTRATS:   MOCK_SAD_06_LISTE_CONTRATS,
+  SDO_SAD_07_CONTRAT:          MOCK_SAD_07,
+  SDO_SAD_08_DATES:            MOCK_SAD_08,
 }
 
 /**
