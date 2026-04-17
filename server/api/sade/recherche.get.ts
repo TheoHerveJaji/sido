@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════════ */
 
 import type { RowDataPacket } from "mysql2";
-import { executeSadePagedQuery } from "~/server/utils/db-sade";
+import { executePagedQuery } from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
   const baseQuery = `SELECT * FROM SDO_SAD_01_RECHERCHE ${whereClause}`;
 
   try {
-    const result = await executeSadePagedQuery<RowDataPacket>(
+    const result = await executePagedQuery<RowDataPacket>(
       baseQuery,
       params,
       page,

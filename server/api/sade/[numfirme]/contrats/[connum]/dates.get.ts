@@ -4,7 +4,7 @@
    ══════════════════════════════════════════════════ */
 
 import type { RowDataPacket } from "mysql2";
-import { getSadePool } from "~/server/utils/db-sade";
+import { getPool } from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
   const numfirme = getRouterParam(event, "numfirme");
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
       message: "N° Firme et N° Contrat requis",
     });
 
-  const db = getSadePool();
+  const db = getPool();
   try {
     const [rows] = await db.query<RowDataPacket[]>(
       "SELECT * FROM SDO_SAD_08_DATES WHERE IDF_NUMFIRME = ? AND NUM_PRODUIT = ? ORDER BY DATE_DEBUT ASC",

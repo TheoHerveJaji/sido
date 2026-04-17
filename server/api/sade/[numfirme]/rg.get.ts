@@ -4,14 +4,14 @@
    ══════════════════════════════════════════════════ */
 
 import type { RowDataPacket } from "mysql2";
-import { getSadePool } from "~/server/utils/db-sade";
+import { getPool } from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
   const numfirme = getRouterParam(event, "numfirme");
   if (!numfirme)
     throw createError({ statusCode: 400, message: "N° Firme requis" });
 
-  const db = getSadePool();
+  const db = getPool();
   try {
     const [rows] = await db.query<RowDataPacket[]>(
       "SELECT * FROM SDO_SAD_02_RENSEIGNEMENTS WHERE IDF_KNUMADH = ?",
