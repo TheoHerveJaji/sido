@@ -5,14 +5,14 @@
     <groupId>fr.klesia.sdo</groupId>
     <artifactId>klesia-sdo-vibe-coding</artifactId>
     <name>klesia-sdo-vibe-coding</name>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <packaging>pom</packaging>
 
     <scm>
         <connection>scm:git:https://Klesia@dev.azure.com/Klesia/SDO/_git/klesia-sdo-vibe-coding</connection>
         <developerConnection>scm:git:https://Klesia@dev.azure.com/Klesia/SDO/_git/klesia-sdo-vibe-coding</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v1.0.1</tag>
     </scm>
 
     <properties>
