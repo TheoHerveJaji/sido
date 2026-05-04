@@ -5,21 +5,21 @@
     <groupId>fr.klesia.sido</groupId>
     <artifactId>klesia-sido-vibe-coding</artifactId>
     <name>klesia-sido-vibe-coding</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <packaging>pom</packaging>
 
     <scm>
         <connection>scm:git:https://Klesia@dev.azure.com/Klesia/SDO/_git/klesia-sdo-vibe-coding</connection>
         <developerConnection>scm:git:https://Klesia@dev.azure.com/Klesia/SDO/_git/klesia-sdo-vibe-coding</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v1.0.0</tag>
     </scm>
 
     <properties>
-        <sonar.sources></sonar.sources>
-        <sonar.tests></sonar.tests>
-        <sonar.exclusions></sonar.exclusions>
-        <sonar.coverage.exclusions></sonar.coverage.exclusions>
+        <sonar.sources />
+        <sonar.tests />
+        <sonar.exclusions />
+        <sonar.coverage.exclusions />
     </properties>
 
     <build>
