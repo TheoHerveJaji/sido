@@ -8,13 +8,21 @@
     </formats>
     <fileSets>
         <fileSet>
+            <directory>${project.basedir}/.output</directory>
+            <outputDirectory>/.output</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>${project.basedir}</directory>
             <outputDirectory>/</outputDirectory>
             <excludes>
                 <exclude>assembly.xml</exclude>
                 <exclude>pom.xml</exclude>
                 <exclude>trivy.json</exclude>
-                <exclude>Jenkinsfile</exclude>
+                <exclude>.output/**</exclude>
+                <exclude>node_modules/**</exclude>
+                <exclude>.nuxt/**</exclude>
+                <exclude>.git/**</exclude>
+                <exclude>stubs/**</exclude>
             </excludes>
         </fileSet>
     </fileSets>
