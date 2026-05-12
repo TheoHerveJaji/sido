@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   css: [
     resolve(
       __dirname,
-      "node_modules/@projetlucie/lc-front-components/dist/style.css",
+      "node_modules/@projetlucie/lc-front-components/dist/lc-front-components.css",
     ),
     "~/assets/css/theme.css",
     "~/assets/css/main.css",
