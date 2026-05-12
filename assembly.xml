@@ -20,6 +20,8 @@
                 <exclude>trivy.json</exclude>
                 <exclude>.output/**</exclude>
                 <exclude>node_modules/**</exclude>
+                <exclude>node/**</exclude>
+                <exclude>target/**</exclude>
                 <exclude>.nuxt/**</exclude>
                 <exclude>.git/**</exclude>
                 <exclude>stubs/**</exclude>
