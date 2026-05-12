@@ -13,6 +13,7 @@
   "dependencies": {
     "@azure/msal-browser": "^3.0.0",
     "@projetlucie/lc-front-components": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-components/2.1.0/klesia-projetlucie-front-components-2.1.0.tgz",
+    "@projetlucie/lc-front-sdk": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-sdk/2.1.1/klesia-projetlucie-front-sdk-2.1.1.tgz",
     "@projetlucie/lc-front-theme": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-theme/1.1.1/klesia-projetlucie-front-theme-1.1.1.tgz",
     "mysql2": "^3.9.0",
     "nuxt": "^3.10.0",
