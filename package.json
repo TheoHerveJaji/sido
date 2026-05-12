@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^3.0.0",
-    "@projetlucie/lc-front-components": "^2.0.83",
-    "@projetlucie/lc-front-theme": "^1.0.12",
+    "@projetlucie/lc-front-components": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-components/2.1.0/klesia-projetlucie-front-components-2.1.0.tgz",
+    "@projetlucie/lc-front-theme": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-theme/1.1.1/klesia-projetlucie-front-theme-1.1.1.tgz",
     "mysql2": "^3.9.0",
     "nuxt": "^3.10.0",
     "vue": "^3.4.0",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.0.0",
-    "@projetlucie/lc-front-shared": "1.0.32",
+    "@projetlucie/lc-front-shared": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-shared/1.0.15/klesia-projetlucie-front-shared-1.0.15.tgz",
     "@types/node": "^20.11.0",
     "typescript": "5.4.2"
   },
@@ -43,7 +43,9 @@
       "postcss@<8.5.10": ">=8.5.10",
       "srvx@<0.11.13": ">=0.11.13",
       "vite": "~7.3.2",
-      "yaml@<2.8.3": ">=2.8.3"
+      "yaml@<2.8.3": ">=2.8.3",
+      "@projetlucie/lc-front-sdk": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-sdk/2.1.1/klesia-projetlucie-front-sdk-2.1.1.tgz",
+      "@projetlucie/lc-front-common": "http://slprdapp105/nexus/content/repositories/releases/fr/klesia/projetlucie/klesia-projetlucie-front-common/2.1.0/klesia-projetlucie-front-common-2.1.0.tgz"
     }
   }
 }
