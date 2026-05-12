@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:git:https://Klesia@dev.azure.com/Klesia/ALM/_git/klesia-sido-vibe-coding</connection>
-        <developerConnection>scm:git:https://Klesia@dev.azure.com/Klesia/ALM/_git/klesia-sido-vibe-coding</developerConnection>
+        <connection>scm:git:https://Klesia@dev.azure.com/Klesia/SDO/_git/klesia-sdo-vibe-coding</connection>
+        <developerConnection>scm:git:https://Klesia@dev.azure.com/Klesia/SDO/_git/klesia-sdo-vibe-coding</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
